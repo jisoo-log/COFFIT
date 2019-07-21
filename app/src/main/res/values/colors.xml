@@ -5,5 +5,6 @@
     <color name="colorMain">#FFEBEE</color>
     <color name="colorSub1">#FFCDD2</color>
     <color name="colorSub2">#CB9CA1</color>
+    <color name="colorDark">#AF4448</color>
     <color name="colorWhite">#FFFFFF</color>
 </resources>

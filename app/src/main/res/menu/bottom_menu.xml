@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bmenu_home"
+        android:icon="@drawable/ic_home"
+        android:title="home" />
+    <item
+        android:id="@+id/bmenu_trainer"
+        android:icon="@drawable/ic_trainer"
+        android:title="trainer" />
+    <item
+        android:id="@+id/bmenu_account"
+        android:icon="@drawable/ic_account"
+        android:title="account" />
+</menu>

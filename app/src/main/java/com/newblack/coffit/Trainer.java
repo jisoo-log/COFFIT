@@ -1,6 +1,9 @@
 package com.newblack.coffit;
 
-public class Trainer {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Trainer implements Serializable {
     private int id;
     private String username;
     private String summary;
@@ -10,7 +13,18 @@ public class Trainer {
     private String pictureURL; //picture_url
     private String phoneNum; //phone_number
     private String fcmToken; //fcm_token
-    private int totStar; //total_star
+    private int star; //total_star
+    private int numReview; //num_review
+
+    public Trainer(int id, String username, String summary, int star, int numReview){
+        //나중엔 없애야 함
+        this.id = id;
+        this.username = username;
+        this.summary = summary;
+        this.star = star;
+        this.numReview = numReview;
+    }
+
 
     public int getId() {
         return id;
@@ -48,8 +62,12 @@ public class Trainer {
         return fcmToken;
     }
 
-    public int getTotStar() {
-        return totStar;
+    public int getStar() {
+        return star;
+    }
+
+    public int getNumReview() {
+        return numReview;
     }
 
 
