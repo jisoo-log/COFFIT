@@ -10,7 +10,7 @@ import android.widget.TextView;
 public class PayActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView tv_count;
-    int ptNum = 4;
+    int ptNum;
 
 
     @Override
@@ -20,7 +20,8 @@ public class PayActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("PT 결제");
         tv_count = findViewById(R.id.tv_count);
-        tv_count.setText(ptNum);
+        ptNum=4;
+        tv_count.setText(String.valueOf(ptNum));
 
     }
 
@@ -30,11 +31,11 @@ public class PayActivity extends AppCompatActivity {
 
     public void plus(View view){
         ptNum++;
-        tv_count.setText(ptNum);
+        tv_count.setText(String.valueOf(ptNum));
     }
 
     public void minus(View view){
         ptNum--;
-        tv_count.setText(ptNum);
+        tv_count.setText(String.valueOf(ptNum));
     }
 }

@@ -28,4 +28,12 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+
+    public void goSchedule(View view){
+
+    }
+
+    public void startPT(View view){
+
+    }
 }

@@ -189,6 +189,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+
                 android:text="상기 사항을 다 확인했으며, 결제를 위한 개인정보 제 3자 제공에 동의합니다 "/>
 
 
@@ -203,6 +204,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorMain"
         android:onClick="clickPay"
+        android:textColor="@color/colorWhite"
         android:text="결제하기"
         android:textSize="18sp" />
 

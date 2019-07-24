@@ -2,7 +2,8 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorMain">#FFEBEE</color>
+    <color name="colorMain">#AA4448</color>
+    <color name="colorMain2">#FFEBEE</color>
     <color name="colorSub1">#FFCDD2</color>
     <color name="colorSub2">#CB9CA1</color>
     <color name="colorDark">#AF4448</color>

@@ -38,6 +38,7 @@ public class TrainerDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("TAG","TrainerDetailActivity onCreate");
         setContentView(R.layout.activity_trainer_detail);
 
         toolbar = findViewById(R.id.toolbar);
@@ -80,41 +81,43 @@ public class TrainerDetailActivity extends AppCompatActivity {
                 "- 2018 소마 초등학교 입학\n" +
                 "- 2020 소마 인증");
 
-        //사진 넣는 쓰레드 임시 작성
-        Thread mThread = new Thread(){
-            @Override
-            public void run() {
-                try{
-                    URL url = new URL("https://coffit.s3.ap-northeast-2.amazonaws.com/1563369432246_%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202019-07-11%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%203.07.39.png");
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setDoInput(true);
-                    conn.connect();
-
-                    InputStream is = conn.getInputStream();
-                    bitmap = BitmapFactory.decodeStream(is);
-                } catch(Exception e){
-                    Log.d("TAG","problem in mThread : from url");
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        mThread.start();
-        try{
-            mThread.join(); //이게 없으면 메인 ㅅ화면 나오기 전에 작동이 안되는듯
-            iv_mainPic.setImageBitmap(bitmap);
-            iv_subPic1.setImageBitmap(bitmap);
-            iv_subPic2.setImageBitmap(bitmap);
-            iv_subPic3.setImageBitmap(bitmap);
-
-        } catch (Exception e){
-            Log.d("TAG" , "problem in mThread : after getting image");
-            e.printStackTrace();
-        }
-        //사진 넣기 테스트
+//
+//        //사진 넣는 쓰레드 임시 작성
+//        Thread mThread = new Thread(){
+//            @Override
+//            public void run() {
+//                try{
+//                    URL url = new URL("https://coffit.s3.ap-northeast-2.amazonaws.com/1563369432246_%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202019-07-11%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%203.07.39.png");
+//                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//                    conn.setDoInput(true);
+//                    conn.connect();
+//
+//                    InputStream is = conn.getInputStream();
+//                    bitmap = BitmapFactory.decodeStream(is);
+//                } catch(Exception e){
+//                    Log.d("TAG","problem in mThread : from url");
+//                    e.printStackTrace();
+//                }
+//            }
+//        };
+//
+//        mThread.start();
+//        try{
+//            mThread.join(); //이게 없으면 메인 ㅅ화면 나오기 전에 작동이 안되는듯
+//            iv_mainPic.setImageBitmap(bitmap);
+//            iv_subPic1.setImageBitmap(bitmap);
+//            iv_subPic2.setImageBitmap(bitmap);
+//            iv_subPic3.setImageBitmap(bitmap);
+//
+//        } catch (Exception e){
+//            Log.d("TAG" , "problem in mThread : after getting image");
+//            e.printStackTrace();
+//        }
+//        //사진 넣기 테스트
 
 
     }
+
 
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -124,12 +127,15 @@ public class TrainerDetailActivity extends AppCompatActivity {
     public void clickApply(View view){
         Intent intent = new Intent(this, PayActivity.class);
         //위의 정보 그대 가져가도 되는건가? 그러면 클래스를 아예 넘겨주는 편이 낫지 않을까 싶네
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("selectedTrainer", selectedTrainer);
-        intent.putExtras(bundle);
+        Log.d("TAG","TrainerDetailActivity : clickApply 진입");
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("selectedTrainer", selectedTrainer);
+//        intent.putExtras(bundle);
         startActivity(intent);
 
     }
+
+
 
     
 }

@@ -205,6 +205,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorMain"
         android:onClick="clickApply"
+        android:textColor="@color/colorWhite"
         android:text="수강신청하기"
         android:textSize="18sp" />
 
