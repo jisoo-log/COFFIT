@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,6 +29,7 @@ public class TrainerFragment extends Fragment  {
     APIInterface apiInterface;
     List<Trainer> trainers2;
     RecyclerView recyclerView;
+    TrainerAdapter adapter;
 
 
     public TrainerFragment() {
@@ -76,25 +78,9 @@ public class TrainerFragment extends Fragment  {
 //        Log.d("TAG","MainActivity onCreate : trainer list is total " + trainers.size());
 
 
-        Log.d("TAG","여기까진 오겠지");
-        retrofitTest();
-        Log.d("TAG", "왜 안오니");
-
-        return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        final TrainerAdapter adapter = new TrainerAdapter();
+//        final TrainerAdapter adapter = new TrainerAdapter();
+        adapter = new TrainerAdapter();
         recyclerView.setAdapter(adapter);
-
-        Log.d("TAG", " 222 check trainers2 size : " + trainers2.size());
-        //데이터 넣는 부분
-        for(Trainer trainer : trainers2){
-            Log.d("TAG","trainer id : " + trainer.getId() + " trainer summary : " + trainer.getSummary() );
-        }
-        adapter.setTrainers(trainers2);
         adapter.setOnItemClickListener(new TrainerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position, int id) {
@@ -102,6 +88,14 @@ public class TrainerFragment extends Fragment  {
             }
         });
 
+        retrofitTest();
+
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     public void retrofitTest(){
@@ -115,8 +109,13 @@ public class TrainerFragment extends Fragment  {
                 List<Trainer> trainerList = response.body();
                 for (Trainer trainer : trainerList ){
                     trainers2.add(trainer);
+                    Log.d("TAG","time : " + trainer.getAt());
+                    Log.d("TAG","time : " + trainer.getAt().getMinutes());
+                    Log.d("TAG","time : " + trainer.getAt().getSeconds());
+                    //Log.d("TAG","date : " + trainer.getAt().get(Calendar.MONTH));
                     Log.d("TAG", "check trainer name : "+trainer.getUsername());
                 }
+                adapter.setTrainers(trainers2);
                 Log.d("TAG", "check trainers2 size : " + trainers2.size());
             }
 

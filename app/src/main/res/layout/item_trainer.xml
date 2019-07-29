@@ -9,6 +9,7 @@
         android:id="@+id/iv_mainpic"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:padding="10dp"
         android:scaleType="centerCrop"
         tools:srcCompat="@tools:sample/avatars" />
 

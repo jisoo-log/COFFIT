@@ -138,4 +138,9 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("trainerId",id);
         startActivity(intent);
     }
+
+    public void goSchedule(){
+        Intent intent = new Intent(this, ScheduleActivity.class);
+        startActivity(intent);
+    }
 }

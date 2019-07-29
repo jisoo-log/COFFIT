@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,8 +53,8 @@ public class TrainerAdapter extends RecyclerView.Adapter<TrainerAdapter.TrainerH
         holder.tv_username.setText(curTrainer.getUsername());
         holder.rating.setRating(curTrainer.getStar());
         //holder.tv_numreview.setText(curTrainer.getNumReview());
-        //이미지처리 나중에 추가해야함
-        //holder.iv_mainpic.setImageURI(curTrainer.getPictureURL());
+        //이미지처리 나중에
+        Picasso.get().load(curTrainer.getPictureURL()).into(holder.iv_mainpic);
 
     }
 

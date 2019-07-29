@@ -3,6 +3,8 @@ package com.newblack.coffit;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 
 @SuppressWarnings("serial")
 public class Trainer implements Serializable {
@@ -29,6 +31,8 @@ public class Trainer implements Serializable {
     private int star; //total_star
     @SerializedName("num_review")
     private int numReview; //num_review
+    @SerializedName("createdAt")
+    public Date createdAt;
 
     public Trainer(int id, String username, String summary, int star, int numReview){
         //나중엔 없애야 함
@@ -94,6 +98,10 @@ public class Trainer implements Serializable {
 
     public int getNumReview() {
         return numReview;
+    }
+
+    public Date getAt(){
+        return createdAt;
     }
 
 
