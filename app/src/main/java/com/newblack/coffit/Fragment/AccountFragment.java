@@ -1,4 +1,4 @@
-package com.newblack.coffit;
+package com.newblack.coffit.Fragment;
 
 
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.newblack.coffit.R;
 
 
 /**

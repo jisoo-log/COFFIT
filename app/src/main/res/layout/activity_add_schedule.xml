@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AddScheduleActivity">
+    tools:context=".Activity.AddScheduleActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -37,18 +37,12 @@
                 android:layout_marginEnd="8dp"
                 app:mcv_showOtherDates="all"
                 app:mcv_selectionColor="@color/colorDark"/>
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent"/>-->
 
             <View
                 android:id="@+id/divide"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/colorGrey"/>
-            <!--app:layout_constraintTop_toBottomOf="@id/calendar"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
 
 
             <TextView
@@ -70,8 +64,15 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:text="모든 수업은 30분 단위로 진행됩니다.\n진행 가능한 수업 시간을 골라주세요."
+                android:layout_marginBottom="15dp"
                 android:textColor="@color/colorDark"/>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!--
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -970,9 +971,10 @@
                         android:padding="10dp"
                         android:textAlignment="center"
                         android:textColor="@color/colorWhite"
-                        android:background="@color/colorAvail"/>
-                        <!--android:visibility="gone"-->
-                        <!--/>-->
+                        android:background="@color/colorAvail"
+                        android:visibility="gone"/>
+
+
                 </TableRow>
 
                 <TableRow
@@ -1004,9 +1006,7 @@
 
 
             </TableLayout>
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/divide" />-->
+            -->
 
 
 

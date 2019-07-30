@@ -1,4 +1,4 @@
-package com.newblack.coffit;
+package com.newblack.coffit.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -6,6 +6,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import com.newblack.coffit.R;
 
 public class PayActivity extends AppCompatActivity {
     Toolbar toolbar;

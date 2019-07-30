@@ -1,4 +1,4 @@
-package com.newblack.coffit;
+package com.newblack.coffit.Fragment;
 
 
 import android.os.Bundle;
@@ -11,6 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.newblack.coffit.Activity.MainActivity;
+import com.newblack.coffit.R;
+import com.newblack.coffit.Data.Trainer;
+import com.newblack.coffit.Adapter.TrainerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

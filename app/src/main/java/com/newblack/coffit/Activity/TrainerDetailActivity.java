@@ -1,11 +1,10 @@
-package com.newblack.coffit;
+package com.newblack.coffit.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,9 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.newblack.coffit.R;
+import com.newblack.coffit.Data.Trainer;
 
 public class TrainerDetailActivity extends AppCompatActivity {
     int trainerId;

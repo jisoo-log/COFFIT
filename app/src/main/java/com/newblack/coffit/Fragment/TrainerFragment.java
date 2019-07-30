@@ -1,7 +1,5 @@
-package com.newblack.coffit;
+package com.newblack.coffit.Fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,8 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.newblack.coffit.APIClient;
+import com.newblack.coffit.APIInterface;
+import com.newblack.coffit.Activity.MainActivity;
+import com.newblack.coffit.R;
+import com.newblack.coffit.Data.Trainer;
+import com.newblack.coffit.Adapter.TrainerAdapter;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;

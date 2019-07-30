@@ -1,13 +1,10 @@
-package com.newblack.coffit;
+package com.newblack.coffit.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +15,11 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.newblack.coffit.Fragment.AccountFragment;
+import com.newblack.coffit.Fragment.HomeFragment;
+import com.newblack.coffit.R;
+import com.newblack.coffit.Fragment.TrainerFragment;
+import com.newblack.coffit.Fragment.TrainerListFragment;
 
 
 public class MainActivity extends AppCompatActivity {

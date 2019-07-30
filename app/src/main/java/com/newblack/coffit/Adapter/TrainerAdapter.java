@@ -1,7 +1,6 @@
-package com.newblack.coffit;
+package com.newblack.coffit.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.newblack.coffit.Data.Trainer;
+import com.newblack.coffit.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.newblack.coffit;
+package com.newblack.coffit.Data;
 
 import com.google.gson.annotations.SerializedName;
 
