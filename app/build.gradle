@@ -47,6 +47,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0-alpha08'
 
 
+    //retrofit2관련 dependency
     implementation('com.squareup.retrofit2:retrofit:2.4.0') {
         exclude module: 'okhttp'
     }
@@ -55,6 +56,9 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

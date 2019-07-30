@@ -113,6 +113,8 @@ public class TrainerFragment extends Fragment  {
                     Log.d("TAG","time : " + trainer.getAt().getMinutes());
                     Log.d("TAG","time : " + trainer.getAt().getSeconds());
                     //Log.d("TAG","date : " + trainer.getAt().get(Calendar.MONTH));
+                    //Log.d("TAG","time22 : " + trainer.getAt2());
+
                     Log.d("TAG", "check trainer name : "+trainer.getUsername());
                 }
                 adapter.setTrainers(trainers2);

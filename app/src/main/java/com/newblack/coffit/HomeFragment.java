@@ -31,6 +31,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         btn_schedule = view.findViewById(R.id.btn_schedule);
         btn_schedule.setOnClickListener(new View.OnClickListener(){
+            //일정 관리로 넘어감
             @Override
             public void onClick(View view) {
                 ((MainActivity)getActivity()).goSchedule();

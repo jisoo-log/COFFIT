@@ -9,4 +9,6 @@
     <color name="colorDark">#dc7e23</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGrey">#c9e9ff</color>
+    <color name="colorAvail">#7fdfff</color>
+    <color name="colorDisavail">#c9e9ff</color>
 </resources>

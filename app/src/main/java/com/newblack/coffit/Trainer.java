@@ -3,6 +3,7 @@ package com.newblack.coffit;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
