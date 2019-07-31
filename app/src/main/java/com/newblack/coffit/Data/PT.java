@@ -6,7 +6,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class PT implements Serializable {
-
+    @SerializedName("id")
+    private int id;
     @SerializedName("price")
     private int price;
     @SerializedName("total_number")
@@ -15,6 +16,8 @@ public class PT implements Serializable {
     private int restNum;
     @SerializedName("start_date")
     private Date startDate;
+    @SerializedName("end_date")
+    private Date endDate;
     @SerializedName("trainerId")
     private int trainerId;
     @SerializedName("studentId")

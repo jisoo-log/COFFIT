@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class Trainer implements Serializable {
@@ -34,14 +35,29 @@ public class Trainer implements Serializable {
     private int numReview; //num_review
     @SerializedName("createdAt")
     public Date createdAt;
+    @SerializedName("trainer_additional_pictures")
+    private List<ExtraPic> extraPics;
 
-    public Trainer(int id, String username, String summary, int star, int numReview){
-        //나중엔 없애야 함
-        this.id = id;
-        this.username = username;
-        this.summary = summary;
-        this.star = star;
-        this.numReview = numReview;
+
+    public class ExtraPic{
+        @SerializedName("id")
+        private int id;
+        @SerializedName("picture_url")
+        private String url;
+        @SerializedName("trainer_id")
+        private int trainerId;
+
+        public int getId() {
+            return id;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public int getTrainerId() {
+            return trainerId;
+        }
     }
 
     //token은 어떻게 해야할지 고민
@@ -105,5 +121,7 @@ public class Trainer implements Serializable {
         return createdAt;
     }
 
-
+    public List<ExtraPic> getExtraPics() {
+        return extraPics;
+    }
 }

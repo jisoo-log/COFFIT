@@ -10,17 +10,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.newblack.coffit.APIClient;
 import com.newblack.coffit.APIInterface;
 import com.newblack.coffit.Activity.MainActivity;
+import com.newblack.coffit.Data.Banner;
 import com.newblack.coffit.R;
 import com.newblack.coffit.Data.Trainer;
 import com.newblack.coffit.Adapter.TrainerAdapter;
+import com.newblack.coffit.Response.HomeResponse;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,9 +34,10 @@ import retrofit2.Response;
 
 public class TrainerFragment extends Fragment  {
     TextView tv_more;
+    ImageView iv_banner;
     final int TL_FRAGMENT = 4;
     APIInterface apiInterface;
-    List<Trainer> trainers2;
+    List<Trainer> trainerList;
     RecyclerView recyclerView;
     TrainerAdapter adapter;
 
@@ -50,11 +56,11 @@ public class TrainerFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        trainers2 = new ArrayList<>();
+        trainerList = new ArrayList<>();
         View view = inflater.inflate(R.layout.fragment_trainer, container, false);
         recyclerView = view.findViewById(R.id.rv_trainer);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        //recyclerView.setHasFixedSize(true);
+        iv_banner = view.findViewById(R.id.iv_banner);
         tv_more = view.findViewById(R.id.tv_more);
         tv_more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +98,7 @@ public class TrainerFragment extends Fragment  {
             }
         });
 
-        retrofitTest();
+        retrofit_home();
 
         return view;
     }
@@ -102,31 +108,35 @@ public class TrainerFragment extends Fragment  {
         super.onStart();
     }
 
-    public void retrofitTest(){
+    public void retrofit_home(){
         apiInterface = APIClient.getClient().create(APIInterface.class);
 
-        Call<List<Trainer>> call = apiInterface.getTrainerList();
-        call.enqueue(new Callback<List<Trainer>>(){
+        Call<HomeResponse> call = apiInterface.getMain();
+        call.enqueue(new Callback<HomeResponse>(){
             @Override
-            public void onResponse(Call<List<Trainer>> call, Response<List<Trainer>> response){
+            public void onResponse(Call<HomeResponse> call, Response<HomeResponse> response){
                 Log.d("TAG", "apiInterface callback onResponse");
-                List<Trainer> trainerList = response.body();
-                for (Trainer trainer : trainerList ){
-                    trainers2.add(trainer);
-                    Log.d("TAG","time : " + trainer.getAt());
-                    Log.d("TAG","time : " + trainer.getAt().getMinutes());
-                    Log.d("TAG","time : " + trainer.getAt().getSeconds());
-                    //Log.d("TAG","date : " + trainer.getAt().get(Calendar.MONTH));
-                    //Log.d("TAG","time22 : " + trainer.getAt2());
+                HomeResponse hr = response.body();
 
+                //트레이너 설정
+                List<Trainer> trainers = hr.getTrainers();
+                for (Trainer trainer : trainers ){
+                    trainerList.add(trainer);
                     Log.d("TAG", "check trainer name : "+trainer.getUsername());
                 }
-                adapter.setTrainers(trainers2);
-                Log.d("TAG", "check trainers2 size : " + trainers2.size());
+                adapter.setTrainers(trainerList);
+
+                //배너 설정
+                List<Banner> banners = hr.getBanners();
+                Random r = new Random();
+                int i = r.nextInt(banners.size()-1);
+                Picasso.get().load(banners.get(i).getPictureURL()).into(iv_banner);
+
+                Log.d("TAG", "check trainers2 size : " + trainerList.size());
             }
 
             @Override
-            public void onFailure(Call<List<Trainer>> call, Throwable t) {
+            public void onFailure(Call<HomeResponse> call, Throwable t) {
                 Log.d("TAG", "통신 실패");
             }
         });
