@@ -66,7 +66,6 @@
                         android:id="@+id/tv_summary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="성공적인 소마생활 메이커"
                         android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -74,8 +73,7 @@
                     <TextView
                         android:id="@+id/tv_username"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="배지훈 트레이너" />
+                        android:layout_height="wrap_content"/>
 
                     <RatingBar
                         android:id="@+id/rating"
@@ -96,7 +94,6 @@
                         android:id="@+id/tv_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="200 만원"
                         android:textAlignment="textEnd"
                         android:textColor="@android:color/holo_orange_dark"
                         android:textSize="24sp"
@@ -107,7 +104,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
+                android:layout_height="2dp"
                 android:layout_marginTop="5dp"
                 android:background="@color/colorGrey" />
 
@@ -115,6 +112,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 android:text="신청 PT 횟수"/>
 
             <LinearLayout
@@ -169,6 +168,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 android:text="결제수단 선택"/>
             <RadioGroup
                 android:layout_width="match_parent"
@@ -176,16 +177,20 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp">
                 <RadioButton
+                    android:id="@+id/radio_kakao_pay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="카카오페이"/>
                 <RadioButton
+                    android:id="@+id/radio_toss"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Toss"/>
+                    android:text="토스"/>
 
             </RadioGroup>
-            <androidx.appcompat.widget.AppCompatCheckBox
+            <CheckBox
+                android:id="@+id/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -202,7 +207,7 @@
         android:id="@+id/btn_pay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorMain"
+        android:background="@color/colorGrey"
         android:onClick="clickPay"
         android:textColor="@color/colorWhite"
         android:text="결제하기"

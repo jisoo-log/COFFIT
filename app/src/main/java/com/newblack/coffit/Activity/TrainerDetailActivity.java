@@ -15,14 +15,11 @@ import android.widget.TextView;
 
 import com.newblack.coffit.APIClient;
 import com.newblack.coffit.APIInterface;
-import com.newblack.coffit.Data.Banner;
 import com.newblack.coffit.R;
 import com.newblack.coffit.Data.Trainer;
-import com.newblack.coffit.Response.HomeResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,8 +42,8 @@ public class TrainerDetailActivity extends AppCompatActivity {
     Bitmap bitmap;
 
     //선택받은 트레이너 서버에서 정보 받아옴
-    Trainer selectedTrainer;
     APIInterface apiInterface;
+    Trainer trainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,26 +75,8 @@ public class TrainerDetailActivity extends AppCompatActivity {
             tv_summary.setText("해당 트레이너가 없습니다");
         }
         else {
-//            tv_summary.setText(trainerId+"번 사람이 선택됐습니다");
-            //여기서 해당 트레이너 정보 서버에서 받아올 수 있도록 하...자?
             retrofit_detail();
         }
-
-//        toolbar.setTitle(trainerId +"번 트레이너!!");
-
-//
-//        //임시 데이터
-//        tv_introDetail.setText("안녕하세요! 여러분을 득근득근하게 만들어주는 트레이너\n" +
-//                "배지훈입니다. 제 특기를 간단하게 세 가지로 말씀드리죠\n" +
-//                "\n" +
-//                "- 1달만에 팔뚝살 평범하게 만들어주기\n" +
-//                "- 삼중턱을 과일칼턱으로 만들기\n" +
-//                "- 코딩은 없는 세상은 살 수 없어!!\n" +
-//                "\n" +
-//                "후회하지 않으실겁니다.");
-//        tv_careerDetail.setText("- 2010 탄생\n" +
-//                "- 2018 소마 초등학교 입학\n" +
-//                "- 2020 소마 인증");
 
 
     }
@@ -113,8 +92,10 @@ public class TrainerDetailActivity extends AppCompatActivity {
         //위의 정보 그대 가져가도 되는건가? 그러면 클래스를 아예 넘겨주는 편이 낫지 않을까 싶네
         Log.d("TAG","TrainerDetailActivity : clickApply 진입");
 //        Bundle bundle = new Bundle();
-//        bundle.putSerializable("selectedTrainer", selectedTrainer);
+//        bundle.putSerializable("Trainer", trainer);
+//
 //        intent.putExtras(bundle);
+        intent.putExtra("Trainer",trainer);
         startActivity(intent);
 
     }
@@ -130,7 +111,7 @@ public class TrainerDetailActivity extends AppCompatActivity {
                 Log.d("TAG", "apiInterface callback onResponse");
 
                 //트레이너 가지고 화면 세팅
-                Trainer trainer = response.body();
+                trainer = response.body();
                 if(trainer != null) {
                     toolbar.setTitle(trainer.getUsername() + " 트레이너");
                     tv_summary.setText(trainer.getSummary());

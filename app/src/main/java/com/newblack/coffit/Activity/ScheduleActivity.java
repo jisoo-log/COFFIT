@@ -12,13 +12,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.newblack.coffit.Adapter.TimeAdapter;
+import com.newblack.coffit.Adapter.ScheduleAdapter;
 import com.newblack.coffit.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-import java.util.Calendar;
 import java.util.List;
 
 public class ScheduleActivity extends AppCompatActivity {
@@ -30,6 +29,8 @@ public class ScheduleActivity extends AppCompatActivity {
     List<CalendarDay> availTime;
     String today;
 
+    RecyclerView recyclerView;
+    ScheduleAdapter adapter;
 
 
 
@@ -49,6 +50,21 @@ public class ScheduleActivity extends AppCompatActivity {
         today = dateFormat(CalendarDay.today());
         tv_today.setText(today);
         //여기서 처음 한번 retrofit 돌려서 전체 스케쥴 받아오기!! 굳이 여러번 돌리지 맙시다
+
+        //받아온 것 중 그 날짜에 맞는 것 표시하도록 - 오 여기 머리아프겠다...
+
+        RecyclerView recyclerView = findViewById(R.id.rv_schedule);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = new ScheduleAdapter();
+        recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new ScheduleAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                //여기서 스케줄 수정용 액티비티 띄우기
+            }
+        });
+
 
         calendar.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override

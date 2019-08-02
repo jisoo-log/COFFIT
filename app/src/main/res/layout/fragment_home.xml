@@ -139,7 +139,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/tv_trainer_say"
+                    android:id="@+id/tv_comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/boarder_grey"

@@ -51,6 +51,7 @@ public class TrainerListFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.rv_trainer);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
+        trainerList = new ArrayList<>();
         context = getContext();
         adapter = new TrainerAdapter();
         recyclerView.setAdapter(adapter);

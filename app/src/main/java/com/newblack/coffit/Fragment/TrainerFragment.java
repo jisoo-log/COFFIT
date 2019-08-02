@@ -20,7 +20,7 @@ import com.newblack.coffit.Data.Banner;
 import com.newblack.coffit.R;
 import com.newblack.coffit.Data.Trainer;
 import com.newblack.coffit.Adapter.TrainerAdapter;
-import com.newblack.coffit.Response.HomeResponse;
+import com.newblack.coffit.Response.TrainerResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -72,22 +72,6 @@ public class TrainerFragment extends Fragment  {
         });
 
 
-
-        //잠시 예시 트레이너 데이터 생성
-//        Trainer tr1 = new Trainer(1,"이지수", "소마에서 운동 한판!", 4, 20);
-//        Trainer tr2 = new Trainer(2,"배지훈", "랄라라라랄라ㅏ라라라", 5, 100);
-//        Trainer tr3 = new Trainer(3,"정은석", "뉴블랙뉴블랙뉴블랙!", 1, 2);
-//        Trainer tr4 = new Trainer(3,"정은석", "뉴블랙뉴블랙뉴블랙!", 1, 2);
-//        Trainer tr5 = new Trainer(3,"정은석", "뉴블랙뉴블랙뉴블랙!", 1, 2);
-//        Trainer tr6 = new Trainer(3,"정은석", "뉴블랙뉴블랙뉴블랙!", 1, 2);
-//        List<Trainer> trainers = new ArrayList<>();
-//        trainers.add(tr1);
-//        trainers.add(tr2);
-//        trainers.add(tr3);
-//        trainers.add(tr4);
-//        Log.d("TAG","MainActivity onCreate : trainer list is total " + trainers.size());
-
-
 //        final TrainerAdapter adapter = new TrainerAdapter();
         adapter = new TrainerAdapter();
         recyclerView.setAdapter(adapter);
@@ -98,7 +82,7 @@ public class TrainerFragment extends Fragment  {
             }
         });
 
-        retrofit_home();
+        retrofit_trainer();
 
         return view;
     }
@@ -108,15 +92,15 @@ public class TrainerFragment extends Fragment  {
         super.onStart();
     }
 
-    public void retrofit_home(){
+    public void retrofit_trainer(){
         apiInterface = APIClient.getClient().create(APIInterface.class);
 
-        Call<HomeResponse> call = apiInterface.getMain();
-        call.enqueue(new Callback<HomeResponse>(){
+        Call<TrainerResponse> call = apiInterface.getMain();
+        call.enqueue(new Callback<TrainerResponse>(){
             @Override
-            public void onResponse(Call<HomeResponse> call, Response<HomeResponse> response){
+            public void onResponse(Call<TrainerResponse> call, Response<TrainerResponse> response){
                 Log.d("TAG", "apiInterface callback onResponse");
-                HomeResponse hr = response.body();
+                TrainerResponse hr = response.body();
 
                 //트레이너 설정
                 List<Trainer> trainers = hr.getTrainers();
@@ -136,7 +120,7 @@ public class TrainerFragment extends Fragment  {
             }
 
             @Override
-            public void onFailure(Call<HomeResponse> call, Throwable t) {
+            public void onFailure(Call<TrainerResponse> call, Throwable t) {
                 Log.d("TAG", "통신 실패");
             }
         });

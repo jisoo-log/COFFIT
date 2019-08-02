@@ -1,22 +1,22 @@
 package com.newblack.coffit.Response;
 
 import com.google.gson.annotations.SerializedName;
-import com.newblack.coffit.Data.Banner;
-import com.newblack.coffit.Data.Trainer;
+import com.newblack.coffit.Data.PT;
+import com.newblack.coffit.Data.Schedule;
 
 import java.util.List;
 
-public class HomeResponse {
-    @SerializedName("banner")
-    private List<Banner> banners;
-    @SerializedName("trainer_list")
-    private List<Trainer> trainers;
+public class HomeResponse extends PT {
+    @SerializedName("PTComment")
+    private PTcomment ptComment;
+    @SerializedName("schedules")
+    private List<Schedule> schedules;
 
-    public List<Banner> getBanners() {
-        return banners;
+    public PTcomment getPtComment() {
+        return ptComment;
     }
 
-    public List<Trainer> getTrainers() {
-        return trainers;
+    public List<Schedule> getSchedules() {
+        return schedules;
     }
 }

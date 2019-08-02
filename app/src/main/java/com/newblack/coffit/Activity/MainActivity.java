@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.newblack.coffit.Fragment.AccountFragment;
 import com.newblack.coffit.Fragment.HomeFragment;
+import com.newblack.coffit.Fragment.HomeNewFragment;
 import com.newblack.coffit.R;
 import com.newblack.coffit.Fragment.TrainerFragment;
 import com.newblack.coffit.Fragment.TrainerListFragment;
@@ -27,16 +29,20 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     FragmentManager fm;
     FragmentTransaction ft;
+    SharedPreferences sp;
+    boolean PTing;
 
     private TrainerFragment trainerFragment;
     private HomeFragment homeFragment;
     private AccountFragment accountFragment;
     private TrainerListFragment trainerListFragment;
+    private HomeNewFragment homeNewFragment;
 
-    final int H_FRAGMENT = 1;
-    final int T_FRAGMENT = 2;
-    final int A_FRAGMENT = 3;
-    final int TL_FRAGMENT = 4;
+    static final int H_FRAGMENT = 1;
+    static final int T_FRAGMENT = 2;
+    static final int A_FRAGMENT = 3;
+    static final int TL_FRAGMENT = 4;
+    static final int HN_FRAGMENT = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +57,34 @@ public class MainActivity extends AppCompatActivity {
         homeFragment = new HomeFragment();
         accountFragment = new AccountFragment();
         trainerListFragment = new TrainerListFragment();
+        homeNewFragment = new HomeNewFragment();
+
+
 
 
         //결제 여부에 따라 변경 필요!
-        setFrag(T_FRAGMENT);
+        //일단 지금은 선생 이름이 있으면 결제한 것으로 판단.. -> 나중에 문제가 생길까?
+        sp = getSharedPreferences("coffit",MODE_PRIVATE);
+        String trainer_name = sp.getString("trainer_name","none");
+        if(trainer_name.equals("none")){
+            PTing = false;
+            setFrag(T_FRAGMENT);
+        }
+        else{
+            PTing = true;
+            setFrag(H_FRAGMENT);
+        }
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.bmenu_home:
-                        setFrag(H_FRAGMENT);
+                        if(PTing){
+                            setFrag(H_FRAGMENT);
+                        }
+                        else {
+                            setFrag(HN_FRAGMENT);
+                        }
                         break;
                     case R.id.bmenu_trainer:
                         setFrag(T_FRAGMENT);
@@ -124,11 +148,13 @@ public class MainActivity extends AppCompatActivity {
                 ft.commit();
                 break;
             case TL_FRAGMENT:
-                Log.d("TAG", "setFrag TL_FRAGMENT");
                 ft.replace(R.id.mainFrame,trainerListFragment);
                 ft.commit();
                 break;
-
+            case HN_FRAGMENT:
+                ft.replace(R.id.mainFrame,homeNewFragment);
+                ft.commit();
+                break;
 
         }
 

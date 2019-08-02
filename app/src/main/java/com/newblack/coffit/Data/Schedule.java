@@ -13,7 +13,8 @@ public class Schedule implements Serializable {
     //  0 : 요청
     //  1 : 확정
     //  2 : 확정 뒤 변경 요청중
-    //  3 : 삭제
+    //  3 : 거절 -> 삭제
+    //  4 : 끝난 schedule
     @SerializedName("state")
     private int state;
 
