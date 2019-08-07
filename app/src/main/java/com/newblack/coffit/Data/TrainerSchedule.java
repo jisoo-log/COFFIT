@@ -24,4 +24,10 @@ public class TrainerSchedule implements Serializable {
     public boolean isAvailability() {
         return availability;
     }
+
+    public String getTime(){
+        int hour = startTime.getHours();
+        int min = startTime.getMinutes();
+        return hour + ":" + min;
+    }
 }

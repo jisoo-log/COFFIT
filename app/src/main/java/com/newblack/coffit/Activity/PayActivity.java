@@ -175,6 +175,7 @@ public class PayActivity extends AppCompatActivity {
                 String name = trainer.getUsername();
                 String pic = trainer.getPictureURL();
                 String summary = trainer.getSummary();
+                editor.putInt("trainer_id",trainer.getId());
                 editor.putString("trainer_name",name);
                 editor.putString("trainer_pic",pic);
                 editor.putString("summary",summary);

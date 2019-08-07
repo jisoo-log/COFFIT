@@ -44,6 +44,7 @@ public class HomeFragment extends Fragment {
     APIInterface apiInterface;
 
     SharedPreferences sp;
+    Boolean ptIdExist;
     Activity activity;
 
     TextView tv_username;
@@ -87,6 +88,10 @@ public class HomeFragment extends Fragment {
         sp = context.getSharedPreferences("coffit",Context.MODE_PRIVATE);
         tv_summary.setText(sp.getString("summary",""));
         tv_username.setText(sp.getString("trainer_name",""));
+
+        //받아올 때 pt_id 초기 저장
+        ptIdExist = !sp.getString("pt_id","").equals("");
+
         String pic_url = sp.getString("trainer_pic","");
         if(!pic_url.equals("")){
             Picasso.get().load(pic_url).into(iv_mainpic);
@@ -121,6 +126,13 @@ public class HomeFragment extends Fragment {
                     List<Schedule> schedules = hr.getSchedules();
                     String info = hr.getRestNum()+ "회 완료 " +"(전체 "+ hr.getTotalNum()+"회 중)";
                     tv_ptnum.setText(info);
+
+                    if(!ptIdExist){
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putInt("pt_id",hr.getId());
+                        editor.commit();
+                    }
+
                     if(comment !=null){
                         tv_comment.setText(comment.getComment());
                     }

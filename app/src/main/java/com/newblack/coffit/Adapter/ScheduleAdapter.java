@@ -68,7 +68,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         }
         String ptNumInfo = ptNum +"회차 PT";
         holder.tv_ptnum.setText(ptNumInfo);
-        holder.tv_state.setText
+        holder.tv_state.setText(curSchedule.stateText().get(0));
 
     }
 

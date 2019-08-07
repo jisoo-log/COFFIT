@@ -107,6 +107,7 @@ public class TrainerFragment extends Fragment  {
                 for (Trainer trainer : trainers ){
                     trainerList.add(trainer);
                     Log.d("TAG", "check trainer name : "+trainer.getUsername());
+                    Log.d("TAG", "check trainer name : "+trainer.getAt());
                 }
                 adapter.setTrainers(trainerList);
 

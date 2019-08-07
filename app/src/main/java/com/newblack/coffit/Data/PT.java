@@ -26,8 +26,8 @@ public class PT implements Serializable {
     private int studentId;
 
     public class PTcomment{
-        @SerializedName("id")
-        private int id;
+        @SerializedName("comment_id")
+        private int comment_id;
         @SerializedName("comment")
         private String comment;
         @SerializedName("PT_id")
@@ -38,12 +38,16 @@ public class PT implements Serializable {
         }
 
         public int getPT_id() {
-            return PT_id;
-        }
-
-        public int getId() {
             return id;
         }
+
+        public int getCommentId() {
+            return comment_id;
+        }
+    }
+
+    public int getId(){
+        return id;
     }
 
     public int getPrice() {

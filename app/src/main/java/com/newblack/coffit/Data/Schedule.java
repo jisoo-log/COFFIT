@@ -50,6 +50,10 @@ public class Schedule implements Serializable {
         return state;
     }
 
+    public void setState(int state) {
+        this.state = state;
+    }
+
     public Date getDate() {
         return date;
     }
@@ -112,12 +116,11 @@ public class Schedule implements Serializable {
             case 3:
                 break;
             case 4:
-                    list.add("PT완료");
+                    list.add("PT 완료");
                     list.add("PT 수업을 진행했습니다");
                 break;
-            default:
-                return list;
         }
+        return list;
     }
 
 

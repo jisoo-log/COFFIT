@@ -58,6 +58,7 @@ public class ScheduleActivity extends AppCompatActivity {
         calendar = findViewById(R.id.calendar);
         calendar.setSelectedDate(CalendarDay.today());
         today = dateFormat(CalendarDay.today());
+        selectedDay = today;
         tv_today.setText(today);
         scheduleList = new ArrayList<>();
         //여기서 처음 한번 retrofit 돌려서 전체 스케쥴 받아오기!! 굳이 여러번 돌리지 맙시다
