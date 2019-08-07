@@ -23,6 +23,8 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import org.threeten.bp.LocalDate;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,6 +48,8 @@ public class AddScheduleActivity extends AppCompatActivity {
     TimeAdapter adapter;
     List<String> times;
     String today;
+    String initialDay;
+    CalendarDay initial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,13 @@ public class AddScheduleActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(adapter);
         times = new ArrayList<>();
 
+
+        Intent intent = getIntent();
+        initialDay = intent.getStringExtra("date");
+        int year = Integer.parseInt(initialDay.split("-")[0]);
+        int month = Integer.parseInt(initialDay.split("-")[1]);
+        int day = Integer.parseInt(initialDay.split("-")[2]);
+        initial = CalendarDay.from(year,month,day);
 
         //삭제해야함! retrofit으로 받아와야하는 임시 데이터
         times.add("07:00");
@@ -107,9 +118,9 @@ public class AddScheduleActivity extends AppCompatActivity {
         //캘린더 초기화
         calendar = findViewById(R.id.calendar);
 
-        calendar.setSelectedDate(CalendarDay.today());
-        checkDate(CalendarDay.today());
-        today = dateFormat(CalendarDay.today());
+        calendar.setSelectedDate(initial);
+        checkDate(initial);
+        today = dateFormat(initial);
         tv_today.setText(today);
         calendar.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override

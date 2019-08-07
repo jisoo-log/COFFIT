@@ -68,6 +68,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         }
         String ptNumInfo = ptNum +"회차 PT";
         holder.tv_ptnum.setText(ptNumInfo);
+        holder.tv_state.setText
 
     }
 
@@ -82,16 +83,18 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         notifyDataSetChanged();
     }
 
-    //timeHolder 클래스 부분
+    //ScheduleHolder 클래스 부분
     class ScheduleHolder extends RecyclerView.ViewHolder {
         private TextView tv_ptnum;
         private TextView tv_time;
+        private TextView tv_state;
 
 
         public ScheduleHolder(@NonNull View itemView) {
             super(itemView);
             tv_ptnum = itemView.findViewById(R.id.tv_ptnum);
             tv_time = itemView.findViewById(R.id.tv_time);
+            tv_state = itemView.findViewById(R.id.tv_state);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

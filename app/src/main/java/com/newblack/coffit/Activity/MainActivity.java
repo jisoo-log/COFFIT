@@ -100,10 +100,25 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
     }
 
+    //뒤로가기 할때 종료되지 않도록
+    public interface onKeyBackPressedListener{
+    }
+    private onKeyBackPressedListener mOnKeyBackPressedListener;
+    public void setOnKeyBackPressedListener(onKeyBackPressedListener listener){
+        mOnKeyBackPressedListener = listener;
+    }
 
+    @Override
+    public void onBackPressed() {
+        if(mOnKeyBackPressedListener != null){
+            setFrag(T_FRAGMENT);
+        }
+        else{
+            super.onBackPressed();
+        }
+    }
 
     //찾기와 노티 메뉴
     @Override

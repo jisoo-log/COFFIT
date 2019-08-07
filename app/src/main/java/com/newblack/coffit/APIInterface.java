@@ -1,5 +1,6 @@
 package com.newblack.coffit;
 
+import com.newblack.coffit.Data.Noti;
 import com.newblack.coffit.Data.PT;
 import com.newblack.coffit.Data.Trainer;
 import com.newblack.coffit.Response.HomeResponse;
@@ -36,4 +37,7 @@ public interface APIInterface {
 
     @GET("schedules/trainer/{id}")
     Call<List<Date>> getAvailableList();
+
+    @GET("notifications/students/{id")
+    Call<List<Noti>> getNotiList(@Path("id") int studentId);
 }

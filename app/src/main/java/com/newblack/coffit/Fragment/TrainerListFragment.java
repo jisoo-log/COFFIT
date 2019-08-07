@@ -1,9 +1,11 @@
 package com.newblack.coffit.Fragment;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,7 +34,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TrainerListFragment extends Fragment {
+public class TrainerListFragment extends Fragment implements MainActivity.onKeyBackPressedListener {
     List<Trainer> trainerList;
     APIInterface apiInterface;
     TrainerAdapter adapter;
@@ -94,4 +96,11 @@ public class TrainerListFragment extends Fragment {
         });
     }
 
+
+    //뒤로가기 할때 아예 종료되지 않도록
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        ((MainActivity)context).setOnKeyBackPressedListener(this);
+    }
 }

@@ -25,8 +25,8 @@
             android:id="@+id/tv_ptnum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:textSize="18dp"
+            android:layout_marginStart="16dp"
+            android:textSize="18sp"
             android:text="3회차 PT"
             app:layout_constraintLeft_toRightOf="@id/iv_fitness"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,6 +42,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/iv_fitness"
             app:layout_constraintTop_toBottomOf="@id/tv_ptnum" />
+
+        <TextView
+            android:id="@+id/tv_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="확정 대기중"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@android:color/holo_red_dark"
+            android:textAlignment="textEnd"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
