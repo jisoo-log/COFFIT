@@ -181,7 +181,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorMain"
-            android:onClick="startPT"
             android:text="PT시작하기"
             android:textColor="@color/colorWhite"
             android:textSize="18sp" />

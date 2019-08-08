@@ -24,6 +24,8 @@ public class PT implements Serializable {
     private int trainerId;
     @SerializedName("studentId")
     private int studentId;
+    @SerializedName("pt_room")
+    private String ptRoom;
 
     public class PTcomment{
         @SerializedName("comment_id")
@@ -72,5 +74,9 @@ public class PT implements Serializable {
 
     public int getStudentId() {
         return studentId;
+    }
+
+    public String getPtRoom() {
+        return ptRoom;
     }
 }

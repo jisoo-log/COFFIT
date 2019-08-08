@@ -3,6 +3,7 @@ package com.newblack.coffit.Fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.newblack.coffit.APIClient;
 import com.newblack.coffit.APIInterface;
 import com.newblack.coffit.Activity.MainActivity;
+import com.newblack.coffit.Activity.PTConnectActivity;
 import com.newblack.coffit.Data.Banner;
 import com.newblack.coffit.Data.PT;
 import com.newblack.coffit.Data.Schedule;
@@ -41,10 +43,12 @@ import retrofit2.Response;
  */
 public class HomeFragment extends Fragment {
     Button btn_schedule;
+    Button btn_startpt;
     APIInterface apiInterface;
 
     SharedPreferences sp;
     Boolean ptIdExist;
+    Boolean ptRoomExist;
     Activity activity;
 
     TextView tv_username;
@@ -83,14 +87,30 @@ public class HomeFragment extends Fragment {
                 ((MainActivity)getActivity()).goSchedule();
             }
         });
+        btn_startpt = view.findViewById(R.id.btn_start);
+        btn_startpt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity)getActivity()).goPT();
+            }
+        });
+
 
         Context context = getActivity();
         sp = context.getSharedPreferences("coffit",Context.MODE_PRIVATE);
         tv_summary.setText(sp.getString("summary",""));
         tv_username.setText(sp.getString("trainer_name",""));
 
+
         //받아올 때 pt_id 초기 저장
+        //일단 지금은 무조건 지우고 새로 만들자. 다만 나중에는 수정해줘야함
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove("pt_id");
+        editor.remove("pt_room");
+        editor.commit();
+
         ptIdExist = !(sp.getInt("pt_id",0)==0);
+        ptRoomExist = !(sp.getString("pt_room","").equals(""));
 
         String pic_url = sp.getString("trainer_pic","");
         if(!pic_url.equals("")){
@@ -103,9 +123,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public void startPT(View view){
 
-    }
 
     public void retrofit_home(){
         apiInterface = APIClient.getClient().create(APIInterface.class);
@@ -127,9 +145,10 @@ public class HomeFragment extends Fragment {
                     String info = hr.getRestNum()+ "회 완료 " +"(전체 "+ hr.getTotalNum()+"회 중)";
                     tv_ptnum.setText(info);
 
-                    if(!ptIdExist){
+                    if(!ptRoomExist){
                         SharedPreferences.Editor editor = sp.edit();
                         editor.putInt("pt_id",hr.getId());
+                        editor.putString("pt_room",hr.getPtRoom());
                         editor.commit();
                     }
 

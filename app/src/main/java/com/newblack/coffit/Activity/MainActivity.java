@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -185,5 +186,17 @@ public class MainActivity extends AppCompatActivity {
     public void goSchedule(){
         Intent intent = new Intent(this, ScheduleActivity.class);
         startActivity(intent);
+    }
+
+    public void goPT(){
+        Intent intent = new Intent(this, PTConnectActivity.class);
+        String ptRoom = sp.getString("pt_room","");
+        if(ptRoom.equals("")){
+            Toast.makeText(this,"Room이 없습니다",Toast.LENGTH_SHORT).show();
+        }
+        else{
+            intent.putExtra("pt_room",ptRoom);
+            startActivity(intent);
+        }
     }
 }

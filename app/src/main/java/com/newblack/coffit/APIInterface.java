@@ -39,8 +39,11 @@ public interface APIInterface {
     Call<Trainer> getTrainer(@Path("id") int trainerId);
 
     @FormUrlEncoded
-    @POST("PTs")
+    @POST("pts")
     Call<PT> postPT(@FieldMap HashMap<String,Object> param);
+
+    @GET("pts/students/{id}")
+    Call<List<HomeResponse>> getPT(@Path("id") int studentId);
 
     @FormUrlEncoded
     @POST("schedules")
@@ -58,8 +61,7 @@ public interface APIInterface {
     @GET("schedules/trainers/{trainerId}")
     Call<TrainerScheduleResponse> getTrainerSchedule(@Path("trainerId") int trainerId);
 
-    @GET("PTs/students/{id}")
-    Call<List<HomeResponse>> getPT(@Path("id") int studentId);
+
 
     @GET("notifications/students/{id}")
     Call<List<NotiResponse>> getNotiList(@Path("id") int studentId);
