@@ -10,6 +10,7 @@ import com.newblack.coffit.Data.TrainerSchedule;
 import com.newblack.coffit.Response.HomeResponse;
 import com.newblack.coffit.Response.NotiResponse;
 import com.newblack.coffit.Response.TrainerResponse;
+import com.newblack.coffit.Response.TrainerScheduleResponse;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -45,24 +46,22 @@ public interface APIInterface {
     @POST("schedules")
     Call<Schedule> postSchedule(@FieldMap HashMap<String,Object> param);
 
-    @GET("schedules/students/{studentId}")
-    Call<Schedule> getSchedule(@Path("studentId") int studentId);
-
-    @GET("trainerSchedules/{trainerId}")
-    Call<List<TrainerSchedule>> getTrainerSchedule(@Path("trainerId") int trainerId);
-
-    @GET("PTs/students/{id}")
-    Call<List<HomeResponse>> getPT(@Path("id") int studentId);
-
-    @GET("schedules/trainer/{id}")
-    Call<List<Date>> getAvailableList();
-
-    @GET("notifications/students/{id}")
-    Call<List<NotiResponse>> getNotiList(@Path("id") int studentId);
-
     @PUT("schedules/{scheduleId}")
     Call<Schedule> putSchedule(@Body Schedule schedule, @Path("scheduleId") int scheduleId, @Query("iAm") String iAm);
 
     @DELETE("schedules/{scheduleId}")
     Call<Schedule> deleteSchedule(@Path("scheduleId") int scheduleId);
+
+    @GET("schedules/students/{studentId}")
+    Call<List<Schedule>> getSchedule(@Path("studentId") int studentId);
+
+    @GET("schedules/trainers/{trainerId}")
+    Call<TrainerScheduleResponse> getTrainerSchedule(@Path("trainerId") int trainerId);
+
+    @GET("PTs/students/{id}")
+    Call<List<HomeResponse>> getPT(@Path("id") int studentId);
+
+    @GET("notifications/students/{id}")
+    Call<List<NotiResponse>> getNotiList(@Path("id") int studentId);
+
 }

@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
         tv_username.setText(sp.getString("trainer_name",""));
 
         //받아올 때 pt_id 초기 저장
-        ptIdExist = !sp.getString("pt_id","").equals("");
+        ptIdExist = !(sp.getInt("pt_id",0)==0);
 
         String pic_url = sp.getString("trainer_pic","");
         if(!pic_url.equals("")){

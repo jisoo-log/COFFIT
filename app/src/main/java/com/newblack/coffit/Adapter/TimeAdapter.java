@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.newblack.coffit.Data.TrainerSchedule;
 import com.newblack.coffit.R;
 
 import java.util.ArrayList;
@@ -17,12 +18,13 @@ import java.util.List;
 
 public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.TimeHolder> {
     Context mContext;
-    private List<String> times = new ArrayList<>();
+    private List<TrainerSchedule> times = new ArrayList<>();
 
 
     //아이템 클릭을 처리하기 위한 인터페이스 정의
     public interface OnItemClickListener {
-        void onItemClick(View v, String time) ;
+        void onItemClick(View v, String time, int id) ;
+
     }
 
     private OnItemClickListener mListener = null ;
@@ -44,13 +46,13 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.TimeHolder> {
     @Override
     public void onBindViewHolder(@NonNull TimeHolder holder, int position) {
         Log.d("TAG","timeAdapter onBindViewHolder : " + position);
-        String curTime = times.get(position);
-        holder.tv_time.setText(curTime);
+        TrainerSchedule curTime = times.get(position);
+        holder.tv_time.setText(curTime.getStringTime());
         holder.tv_request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(mListener != null){
-                    mListener.onItemClick(holder.tv_time,times.get(position));
+                    mListener.onItemClick(holder.tv_time,curTime.getStringTime(),curTime.getId());
                 }
                 else{
                     Log.d("TAG","already mListener made");
@@ -66,7 +68,7 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.TimeHolder> {
     }
 
 
-    public void setTimes(List<String> times){
+    public void setTimes(List<TrainerSchedule> times){
         this.times = times;
         notifyDataSetChanged();
     }
@@ -83,21 +85,6 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.TimeHolder> {
             tv_request = itemView.findViewById(R.id.tv_request);
 
 
-
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    int position = getAdapterPosition();
-//                    if(position != RecyclerView.NO_POSITION) {
-//                        if (mListener != null) {
-//                            //위치와 id까지 한번에 가져올 수 있도록
-//                            mListener.onItemClick(v, position, times.get(position).getId());
-//                        }
-//                    }
-//
-//                    Log.d("test", "position = "+ getAdapterPosition());
-//                }
-//            });
 
         }
     }

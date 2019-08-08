@@ -11,13 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.newblack.coffit.APIClient;
+import com.newblack.coffit.APIInterface;
 import com.newblack.coffit.Adapter.ScheduleAdapter;
 import com.newblack.coffit.Data.Schedule;
+import com.newblack.coffit.Data.TrainerSchedule;
 import com.newblack.coffit.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -25,8 +29,13 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ScheduleActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -34,11 +43,15 @@ public class ScheduleActivity extends AppCompatActivity {
     MaterialCalendarView calendar;
     List<Schedule> scheduleList;
     String today;
+    String today_object;
     String selectedDay;
+    int studentId;
 
     RecyclerView recyclerView;
     ScheduleAdapter adapter;
     Activity activity;
+    APIInterface apiInterface;
+    SharedPreferences sp;
 
 
 
@@ -52,16 +65,24 @@ public class ScheduleActivity extends AppCompatActivity {
         tv_today = findViewById(R.id.tv_today);
         activity = this;
 
+        sp = getSharedPreferences("coffit",MODE_PRIVATE);
+        studentId = sp.getInt("studentId",0);
+
 
 
 //        calendar.addDecorators(new SundayDecorator(), new SaturdayDecorator(), oneDayDecorater);
         calendar = findViewById(R.id.calendar);
         calendar.setSelectedDate(CalendarDay.today());
+        today_object = dateObject(CalendarDay.today());
+        selectedDay = today_object;
         today = dateFormat(CalendarDay.today());
-        selectedDay = today;
         tv_today.setText(today);
         scheduleList = new ArrayList<>();
         //여기서 처음 한번 retrofit 돌려서 전체 스케쥴 받아오기!! 굳이 여러번 돌리지 맙시다
+        retrofit_getSchedule();
+
+
+
 
         //받아온 것 중 그 날짜에 맞는 것 표시하도록 - 오 여기 머리아프겠다...
 
@@ -117,6 +138,7 @@ public class ScheduleActivity extends AppCompatActivity {
                 selectedDay = dateObject(date);
                 today = dateFormat(date);
                 tv_today.setText(today);
+                adapter.setSchedules(getTodaySchedule(date,scheduleList));
 
                 //레트로핏 결과에 따라 스케쥴 보여주기.. 스케쥴리스트를 잘 받아다가 ㅎㅎ
 
@@ -128,18 +150,57 @@ public class ScheduleActivity extends AppCompatActivity {
     public void newPT(View view){
         Intent intent = new Intent(this, AddScheduleActivity.class);
         intent.putExtra("date",selectedDay);
+        Log.d("TAG","selectedDay : " + selectedDay);
         startActivity(intent);
     }
 
 
-    public void retrofit(){
+    public void retrofit_getSchedule(){
         //스케줄 받아서 표시하는 부분
         //일단 표시할 내용만 구현
+        apiInterface = APIClient.getClient().create(APIInterface.class);
 
-        adapter.setSchedules(scheduleList);
+        Call<List<Schedule>> call = apiInterface.getSchedule(studentId);
+        call.enqueue(new Callback<List<Schedule>>(){
+            @Override
+            public void onResponse(Call<List<Schedule>> call, Response<List<Schedule>> response){
+                Log.d("TAG", "apiInterface callback onResponse");
+                List<Schedule> schedules = response.body();
+                scheduleList.addAll(schedules);
+
+                //초기 화면만 설정
+                adapter.setSchedules(getTodaySchedule(CalendarDay.today(),scheduleList));
+            }
+
+            @Override
+            public void onFailure(Call<List<Schedule>> call, Throwable t) {
+                t.printStackTrace();
+                Log.d("TAG", "통신 실패");
+            }
+        });
 
 
     }
+
+
+    //날짜별 캘린더 색 설정
+
+
+    //오늘 날짜의 스케줄만 가져오는 용도
+    public List<Schedule> getTodaySchedule(CalendarDay day, List<Schedule> schedules ){
+        List<Schedule> result = new ArrayList<>();
+        CalendarDay selected;
+        for (Schedule schedule : schedules){
+            Date date = schedule.getStartTime();
+            selected = CalendarDay.from(date.getYear(), date.getMonth(), date.getDate());
+            if(selected.equals(day)){
+                //날짜 같을때 추가
+                result.add(schedule);
+            }
+        }
+        return result;
+    }
+
 
     public static String dateFormat(CalendarDay date){
         String day = date.getYear() +"년 " + date.getMonth()+"월 " + date.getDay()+"일  ";
@@ -151,4 +212,6 @@ public class ScheduleActivity extends AppCompatActivity {
         String day = date.getYear()+"-"+date.getMonth()+"-"+date.getDay();
         return day;
     }
+
+
 }
