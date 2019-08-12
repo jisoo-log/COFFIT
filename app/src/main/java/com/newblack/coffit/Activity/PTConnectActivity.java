@@ -47,7 +47,7 @@ public class PTConnectActivity extends AppCompatActivity {
     private static boolean commandLineRun = false;
 
 //    private ImageButton addFavoriteButton;
-//    private EditText roomEditText;
+    private EditText roomEditText;
 //    private ListView roomListView;
     private SharedPreferences sharedPref;
     private String keyprefResolution;
@@ -81,25 +81,25 @@ public class PTConnectActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_ptconnect);
 
-//        roomEditText = findViewById(R.id.room_edittext);
-//        roomEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-//                if (i == EditorInfo.IME_ACTION_DONE) {
+        roomEditText = findViewById(R.id.room_edittext);
+        roomEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
 //                    addFavoriteButton.performClick();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-//        roomEditText.requestFocus();
+                    return true;
+                }
+                return false;
+            }
+        });
+        roomEditText.requestFocus();
 
 //        roomListView = findViewById(R.id.room_listview);
 //        roomListView.setEmptyView(findViewById(android.R.id.empty));
 //        roomListView.setOnItemClickListener(roomListClickListener);
 //        registerForContextMenu(roomListView);
-//        ImageButton connectButton = findViewById(R.id.connect_button);
-//        connectButton.setOnClickListener(connectListener);
+        ImageButton connectButton = findViewById(R.id.connect_button);
+        connectButton.setOnClickListener(connectListener);
 //        addFavoriteButton = findViewById(R.id.add_favorite_button);
 //        addFavoriteButton.setOnClickListener(addFavoriteListener);
 
@@ -115,10 +115,10 @@ public class PTConnectActivity extends AppCompatActivity {
         }
 
         //내가 추가한 부분. 바로 webRTC 실행
-        Intent intent1 = getIntent();
-        String pt_room = intent1.getStringExtra("pt_room");
-        String pt_room2 = pt_room + "123";
-        connectToRoom(pt_room2, false, false, false, 0);
+//        Intent intent1 = getIntent();
+//        String pt_room = intent1.getStringExtra("pt_room");
+//        String pt_room2 = "123hellojkfjdlk";
+//        connectToRoom(pt_room2, false, false, false, 0);
     }
 
     @Override
@@ -642,10 +642,10 @@ public class PTConnectActivity extends AppCompatActivity {
 //        }
 //    };
 //
-//    private final View.OnClickListener connectListener = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View view) {
-//            connectToRoom(roomEditText.getText().toString(), false, false, false, 0);
-//        }
-//    };
+    private final View.OnClickListener connectListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            connectToRoom(roomEditText.getText().toString(), false, false, false, 0);
+        }
+    };
 }

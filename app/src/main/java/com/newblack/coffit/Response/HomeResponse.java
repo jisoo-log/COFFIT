@@ -7,7 +7,7 @@ import com.newblack.coffit.Data.Schedule;
 import java.util.List;
 
 public class HomeResponse extends PT {
-    @SerializedName("PTComment")
+    @SerializedName("ptComment")
     private PTcomment ptComment;
     @SerializedName("schedules")
     private List<Schedule> schedules;

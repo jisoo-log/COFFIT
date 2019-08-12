@@ -23,12 +23,16 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import io.crossbar.autobahn.websocket.WebSocketConnection;
+import io.crossbar.autobahn.websocket.WebSocketConnectionHandler;
+import io.crossbar.autobahn.websocket.exceptions.WebSocketException;
+
 //import de.tavendo.autobahn.WebSocket.WebSocketConnectionObserver;
 //import de.tavendo.autobahn.WebSocket.ConnectionHandler;
-import de.tavendo.autobahn.WebSocket;
-import de.tavendo.autobahn.WebSocketConnection;
-import de.tavendo.autobahn.WebSocketConnectionHandler;
-import de.tavendo.autobahn.WebSocketException;
+//import de.tavendo.autobahn.WebSocket;
+//import de.tavendo.autobahn.WebSocketConnection;
+//import de.tavendo.autobahn.WebSocketConnectionHandler;
+//import de.tavendo.autobahn.WebSocketException;
 
 /**
  * WebSocket client implementation.
@@ -121,7 +125,7 @@ public class WebSocketChannelClient {
       json.put("roomid", roomID);
       json.put("clientid", clientID);
       Log.d(TAG, "C->WSS: " + json.toString());
-      ws.sendTextMessage(json.toString());
+      ws.sendMessage(json.toString());
       state = WebSocketConnectionState.REGISTERED;
       // Send any previously accumulated messages.
       for (String sendMessage : wsSendQueue) {
@@ -154,7 +158,7 @@ public class WebSocketChannelClient {
           json.put("msg", message);
           message = json.toString();
           Log.d(TAG, "C->WSS: " + message);
-          ws.sendTextMessage(message);
+          ws.sendMessage(message);
         } catch (JSONException e) {
           reportError("WebSocket send JSON error: " + e.getMessage());
         }
@@ -181,7 +185,8 @@ public class WebSocketChannelClient {
     }
     // Close WebSocket in CONNECTED or ERROR states only.
     if (state == WebSocketConnectionState.CONNECTED || state == WebSocketConnectionState.ERROR) {
-      ws.disconnect();
+//      ws.disconnect();
+      ws.sendClose();
       state = WebSocketConnectionState.CLOSED;
 
       // Wait for websocket close event to prevent websocket library from
@@ -275,25 +280,25 @@ public class WebSocketChannelClient {
       });
     }
 
-    @Override
-    public void onTextMessage(String payload) {
-      Log.d(TAG, "WSS->C: " + payload);
-      final String message = payload;
-      handler.post(new Runnable() {
-        @Override
-        public void run() {
-          if (state == WebSocketConnectionState.CONNECTED
-              || state == WebSocketConnectionState.REGISTERED) {
-            events.onWebSocketMessage(message);
-          }
-        }
-      });
-    }
+//    @Override
+//    public void onTextMessage(String payload) {
+//      Log.d(TAG, "WSS->C: " + payload);
+//      final String message = payload;
+//      handler.post(new Runnable() {
+//        @Override
+//        public void run() {
+//          if (state == WebSocketConnectionState.CONNECTED
+//              || state == WebSocketConnectionState.REGISTERED) {
+//            events.onWebSocketMessage(message);
+//          }
+//        }
+//      });
+//    }
 
-    @Override
-    public void onRawTextMessage(byte[] payload) {}
-
-    @Override
-    public void onBinaryMessage(byte[] payload) {}
+//    @Override
+//    public void onRawTextMessage(byte[] payload) {}
+//
+//    @Override
+//    public void onBinaryMessage(byte[] payload) {}
   }
 }

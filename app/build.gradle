@@ -62,7 +62,9 @@ dependencies {
 
     //webRTC
     implementation 'org.webrtc:google-webrtc:1.0.24277'
-    implementation 'com.github.tavendo:AutobahnAndroid:v0.5.2'
+    implementation 'io.crossbar.autobahn:autobahn-android:18.5.1'
+//    implementation 'com.github.tavendo:AutobahnAndroid:v0.5.2'
+
 
     //calendar view
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
