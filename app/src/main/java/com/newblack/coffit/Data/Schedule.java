@@ -26,19 +26,19 @@ public class Schedule implements Serializable {
 
 
     @SerializedName("date")
-    private Date date;
+    private String date;
     @SerializedName("start_time")
-    private Date startTime;
+    private String startTime;
     @SerializedName("end_time")
-    private Date endTime;
+    private String endTime;
 
     @SerializedName("memo")
     private String memo;
-    @SerializedName("PT_id")
-    private int PTId;
-    @SerializedName("trainerId")
+    @SerializedName("pt_id")
+    private int PT_id;
+    @SerializedName("trainer_id")
     private int trainerId;
-    @SerializedName("studentId")
+    @SerializedName("student_id")
     private int studentId;
 
 
@@ -54,24 +54,26 @@ public class Schedule implements Serializable {
         this.state = state;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public Date getStartTime() {
-        return startTime;
-    }
 
-    public Date getEndTime() {
-        return endTime;
-    }
+    //추후 시간 다시 보기
+//    public String getStartTime() {
+//        return startTime;
+//    }
+//
+//    public String getEndTime() {
+//        return endTime;
+//    }
 
     public String getMemo() {
         return memo;
     }
 
     public int getPTId() {
-        return PTId;
+        return PT_id;
     }
 
     public int getTrainerId() {

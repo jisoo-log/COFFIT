@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorMain</item>
     </style>
 
+    <!--<style name="dialog_light" parent="@android:style/Theme.Dialog">-->
+        <!--<item name="@android:windowBackground">@color/colorWhite</item>-->
+        <!--<item name="@android:textColor">@color/black</item>-->
+    <!--</style>-->
+
+
 </resources>

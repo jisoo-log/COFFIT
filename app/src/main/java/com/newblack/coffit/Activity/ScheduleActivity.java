@@ -22,6 +22,7 @@ import com.newblack.coffit.APIInterface;
 import com.newblack.coffit.Adapter.ScheduleAdapter;
 import com.newblack.coffit.Data.Schedule;
 import com.newblack.coffit.Data.TrainerSchedule;
+import com.newblack.coffit.DateUtils;
 import com.newblack.coffit.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -29,6 +30,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -66,7 +68,7 @@ public class ScheduleActivity extends AppCompatActivity {
         activity = this;
 
         sp = getSharedPreferences("coffit",MODE_PRIVATE);
-        studentId = sp.getInt("studentId",0);
+        studentId = sp.getInt("student_id",0);
 
 
 
@@ -100,34 +102,6 @@ public class ScheduleActivity extends AppCompatActivity {
                 Intent intent = new Intent(activity,ScheduleDialogActivity.class);
                 intent.putExtra("schedule",schedule);
                 startActivity(intent);
-
-
-                //다이얼로그 만드는 아이디어는 일단 보류
-//                List<String> dialogList = new ArrayList<>();
-//                switch(schedule.getState()){
-//                    case 0 :
-//                        break;
-//                    case 1 :
-//                        dialogList.add("수정");
-//                        break;
-//                    default:
-//                        dialogList.add("삭제");
-//                }
-//                final CharSequence[] items =  dialogList.toArray(new String[ dialogList.size()]);
-//
-//
-//                //스케줄 요청 위한 최종 대화상자
-//                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-//                builder.setTitle("선택하신 PT 일정을");
-//                builder.setMessage("메세지 넣는 부분");
-//                builder.setItems(items, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                    }
-//                });
-//                builder.show();
-
             }
         });
 
@@ -157,7 +131,6 @@ public class ScheduleActivity extends AppCompatActivity {
 
     public void retrofit_getSchedule(){
         //스케줄 받아서 표시하는 부분
-        //일단 표시할 내용만 구현
         apiInterface = APIClient.getClient().create(APIInterface.class);
 
         Call<List<Schedule>> call = apiInterface.getSchedule(studentId);
@@ -167,7 +140,11 @@ public class ScheduleActivity extends AppCompatActivity {
                 Log.d("TAG", "apiInterface callback onResponse");
                 List<Schedule> schedules = response.body();
                 scheduleList.addAll(schedules);
+                Log.d("TAG","schedulelist size : " +scheduleList.size());
 
+                for(Schedule test : scheduleList){
+                    Log.d("TAG" , "id " + test.getId()+ " time " +test.getDate());
+                }
                 //초기 화면만 설정
                 adapter.setSchedules(getTodaySchedule(CalendarDay.today(),scheduleList));
             }
@@ -178,8 +155,6 @@ public class ScheduleActivity extends AppCompatActivity {
                 Log.d("TAG", "통신 실패");
             }
         });
-
-
     }
 
 
@@ -191,8 +166,11 @@ public class ScheduleActivity extends AppCompatActivity {
         List<Schedule> result = new ArrayList<>();
         CalendarDay selected;
         for (Schedule schedule : schedules){
-            Date date = schedule.getStartTime();
-            selected = CalendarDay.from(date.getYear(), date.getMonth(), date.getDate());
+            Date date = DateUtils.stringToDate(schedule.getDate());
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            selected = CalendarDay.from(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DATE));
+//            Log.d("TAG","selected : "+dateFormat(selected)+" 일치 여부 : "+ selected.equals(day));
             if(selected.equals(day)){
                 //날짜 같을때 추가
                 result.add(schedule);

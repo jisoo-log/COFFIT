@@ -23,6 +23,7 @@ import com.newblack.coffit.APIInterface;
 import com.newblack.coffit.Adapter.TimeAdapter;
 import com.newblack.coffit.Data.Schedule;
 import com.newblack.coffit.Data.TrainerSchedule;
+import com.newblack.coffit.DateUtils;
 import com.newblack.coffit.R;
 import com.newblack.coffit.Response.TrainerScheduleResponse;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -84,10 +85,11 @@ public class AddScheduleActivity extends AppCompatActivity {
         adapter = new TimeAdapter();
         mRecyclerView.setAdapter(adapter);
         times = new ArrayList<>();
+        trainerScheduleList = new ArrayList<>();
 
         sp = getSharedPreferences("coffit", Context.MODE_PRIVATE);
-        studentId = sp.getInt("studentId",0);
-        trainerId = sp.getInt("trainerId", 0);
+        studentId = sp.getInt("student_id",0);
+        trainerId = sp.getInt("trainer_id", 0);
         pt_id = sp.getInt("pt_id",0);
         Log.d("TAG", "studentId : " +studentId + " trainerId" + trainerId + " pt_id :"+ pt_id );
 
@@ -113,13 +115,6 @@ public class AddScheduleActivity extends AppCompatActivity {
         Log.d("TAG", "initial year :" + initial.getYear());
         selectedDay = CalendarDay.from(year,month,day);
 
-//
-//        //삭제해야함! retrofit으로 받아와야하는 임시 데이터
-//        times.add("07:00");
-//        times.add("12:30");
-//        times.add("13:00");
-//        times.add("15:00");
-//        times.add("15:30");
 
         adapter.setOnItemClickListener(new TimeAdapter.OnItemClickListener() {
             @Override
@@ -144,18 +139,20 @@ public class AddScheduleActivity extends AppCompatActivity {
                                 schedule.put("state",0);
                                 schedule.put("date",date);
                                 schedule.put("is_trainer",false);
-                                schedule.put("studentId",studentId);
-                                schedule.put("trainerId",trainerId);
+                                schedule.put("student_id",studentId);
+                                schedule.put("trainer_id",trainerId);
                                 schedule.put("past_schedule_id",pastId);
                                 //pt id는 내부것을 사용하는게 나을듯
                                 schedule.put("pt_id",pt_id);
                                 //여기 고른 시간 id 넣어줘야함
                                 schedule.put("trainer_schedule_id",id);
 
-                                retrofit_postSchedule(schedule);
-                                //retrofit으로 스케줄 보낸 뒤엔 ScheduleActivity로 돌아감
 
-                                finish();
+                                Log.d("TAG", "post 점검 : student "+schedule.get("student_id")+
+                                        " trainer "+schedule.get("trainer_id")+
+                                        " pt_id " +schedule.get("pt_id") );
+
+                                retrofit_postSchedule(schedule);
                             }
                         });
                 builder.setNegativeButton("취소",
@@ -209,10 +206,20 @@ public class AddScheduleActivity extends AppCompatActivity {
         else {
             //오늘부터 2주 내의 날짜를 선택했다면 retrofit으로 트레이너 스케줄 가져옴
             //retrofit에서 받아왔을 데이터 가지고 ["6:00","7:30",.. ] 이런 리스트를 만들어서 넣을 것임
-            tv_info.setText("모든 수업은 30분 단위로 진행됩니다.\n아래에서 가능한 수업 시간을 골라주세요.");
-            mRecyclerView.setVisibility(View.VISIBLE);
-            adapter.setTimes(getTodaySchedule(date,trainerScheduleList));
 
+            mRecyclerView.setVisibility(View.VISIBLE);
+            Log.d("TAG","리스트 사이즈 : "+ trainerScheduleList.size());
+            if(trainerScheduleList.size()!=0) {
+                List<TrainerSchedule> test_schedule = getTodaySchedule(date, trainerScheduleList);
+                for(TrainerSchedule schedule : test_schedule){
+                    Log.d("TAG", schedule.getStringTime() );
+                }
+                adapter.setTimes(getTodaySchedule(date, trainerScheduleList));
+                tv_info.setText("모든 수업은 30분 단위로 진행됩니다.\n아래에서 가능한 수업 시간을 골라주세요.");
+            }
+            else{
+                tv_info.setText("수업 가능한 시간이 없습니다\n다른 날을 선택해주세요.");
+            }
         }
 
     }
@@ -224,15 +231,18 @@ public class AddScheduleActivity extends AppCompatActivity {
         Call<TrainerScheduleResponse> call = apiInterface.getTrainerSchedule(trainerId);
         call.enqueue(new Callback<TrainerScheduleResponse>(){
             @Override
-            public void onResponse(Call<TrainerScheduleResponse> call, Response<TrainerScheduleResponse> response){
+            public void onResponse(Call<TrainerScheduleResponse> call, Response<TrainerScheduleResponse> response) {
                 Log.d("TAG", "apiInterface callback onResponse");
                 TrainerScheduleResponse scheduleResponse = response.body();
                 trainerScheduleList.addAll(scheduleResponse.getAvailables());
 
-                //초기 화면만 설정
-                adapter.setTimes(getTodaySchedule(initial,trainerScheduleList));
-            }
 
+                //초기 화면만 설정
+                if (trainerScheduleList.size() != 0) {
+                    adapter.setTimes(getTodaySchedule(initial, trainerScheduleList));
+                    tv_info.setText("모든 수업은 30분 단위로 진행됩니다.\n아래에서 가능한 수업 시간을 골라주세요.");
+                }
+            }
             @Override
             public void onFailure(Call<TrainerScheduleResponse> call, Throwable t) {
                 t.printStackTrace();
@@ -249,8 +259,8 @@ public class AddScheduleActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<Schedule> call, @NonNull Response<Schedule> response) {
                 Toast.makeText(activity,"예약 요청을 보냈습니다",Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(activity, ScheduleActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(activity, ScheduleActivity.class);
+//                startActivity(intent);
                 finish();
 
             }
@@ -269,8 +279,12 @@ public class AddScheduleActivity extends AppCompatActivity {
         List<TrainerSchedule> result = new ArrayList<>();
         CalendarDay selected;
         for (TrainerSchedule schedule : schedules){
-            Date date = schedule.getStartTime();
-            selected = CalendarDay.from(date.getYear(), date.getMonth(), date.getDate());
+            Date date = DateUtils.stringToDate(schedule.getStartTime());
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            selected = CalendarDay.from(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DATE));
+//            Log.d("TAG","selected : "+dateFormat(selected)+" 일치 여부 : "+ selected.equals(day));
+
             if(selected.equals(day)){
                 //날짜 같을때 추가
                 result.add(schedule);

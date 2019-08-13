@@ -138,7 +138,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this,"찾기 버튼",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menu_alarm:
-                Toast.makeText(this,"노티 버튼",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this,NotiActivity.class);
+                startActivity(intent);
+                //Toast.makeText(this,"노티 버튼",Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -189,15 +191,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goPT(){
-        Intent intent = new Intent(this, PTConnectActivity.class);
-//        String ptRoom = sp.getString("pt_room","");
-        String ptRoom = "hello";
-        if(ptRoom.equals("")){
-            Toast.makeText(this,"Room이 없습니다",Toast.LENGTH_SHORT).show();
-        }
-        else{
-            intent.putExtra("pt_room",ptRoom);
-            startActivity(intent);
-        }
+        Toast.makeText(this, "PT 시작!!",Toast.LENGTH_SHORT).show();
+//        Intent intent = new Intent(this, PTConnectActivity.class);
+////        String ptRoom = sp.getString("pt_room","");
+//        String ptRoom = "hello";
+//        if(ptRoom.equals("")){
+//            Toast.makeText(this,"Room이 없습니다",Toast.LENGTH_SHORT).show();
+//        }
+//        else{
+//            intent.putExtra("pt_room",ptRoom);
+//            startActivity(intent);
+//        }
     }
 }

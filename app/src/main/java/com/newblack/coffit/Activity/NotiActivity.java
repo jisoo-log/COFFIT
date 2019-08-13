@@ -20,6 +20,7 @@ import com.newblack.coffit.Data.Schedule;
 import com.newblack.coffit.R;
 import com.newblack.coffit.Response.NotiResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -45,12 +46,13 @@ public class NotiActivity extends AppCompatActivity {
         setContentView(R.layout.activity_noti);
 
         sp = getSharedPreferences("coffit",MODE_PRIVATE);
-        id = sp.getInt("studentId",1);
+        id = sp.getInt("student_id",0);
         toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.rv_noti);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        notiAdapter = new NotiAdapter();
+        notiAdapter = new NotiAdapter(this);
         recyclerView.setAdapter(notiAdapter);
+        notiList = new ArrayList<>();
 
         notiAdapter.setOnItemClickListener(new NotiAdapter.OnItemClickListener() {
             @Override
@@ -80,7 +82,8 @@ public class NotiActivity extends AppCompatActivity {
                 notis = response.body();
                 if(notis != null){
                     for(NotiResponse noti : notis){
-                        notiList.add(noti.getNoti());
+                        //강제로 형변환을 일으켜도 괜찮을까??
+                        notiList.add(noti);
                     }
                     notiAdapter.setNotis(notiList);
                 }

@@ -43,7 +43,7 @@ public interface APIInterface {
     Call<PT> postPT(@FieldMap HashMap<String,Object> param);
 
     @GET("pts/students/{id}")
-    Call<List<HomeResponse>> getPT(@Path("id") int studentId);
+    Call<HomeResponse> getPT(@Path("id") int studentId);
 
     @FormUrlEncoded
     @POST("schedules")
