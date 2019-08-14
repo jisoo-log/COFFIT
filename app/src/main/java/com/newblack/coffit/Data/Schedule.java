@@ -1,6 +1,7 @@
 package com.newblack.coffit.Data;
 
 import com.google.gson.annotations.SerializedName;
+import com.newblack.coffit.DateUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,11 +27,11 @@ public class Schedule implements Serializable {
 
 
     @SerializedName("date")
-    private String date;
-    @SerializedName("start_time")
-    private String startTime;
-    @SerializedName("end_time")
-    private String endTime;
+    private Date date;
+//    @SerializedName("start_time")
+//    private String startTime;
+//    @SerializedName("end_time")
+//    private String endTime;
 
     @SerializedName("memo")
     private String memo;
@@ -40,6 +41,10 @@ public class Schedule implements Serializable {
     private int trainerId;
     @SerializedName("student_id")
     private int studentId;
+
+    //테스트용
+    @SerializedName("createdAt")
+    public Date createdAt;
 
 
     public int getId() {
@@ -54,19 +59,35 @@ public class Schedule implements Serializable {
         this.state = state;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
 
-    //추후 시간 다시 보기
-//    public String getStartTime() {
-//        return startTime;
-//    }
-//
-//    public String getEndTime() {
-//        return endTime;
-//    }
+    public String getStartEndTime(int start) {
+        Date date = this.getDate();
+        String newDate = DateUtils.fromServerTime(date);
+        int hour = DateUtils.getValueFromDate(newDate,DateUtils.HOUR);
+        int min = DateUtils.getValueFromDate(newDate,DateUtils.MINUTE);
+        String hour_ = DateUtils.timeNumberToString(hour);
+        String min_ = DateUtils.timeNumberToString(min);
+        if(start==0){
+            //get start time
+            return hour_+":"+min_;
+        }
+        else{
+            //get end time
+            if(min==0){
+                return hour_+":30";
+            }
+            else{
+                hour_ = DateUtils.timeNumberToString(hour+1);
+                return hour_+":00";
+            }
+        }
+
+    }
+
 
     public String getMemo() {
         return memo;

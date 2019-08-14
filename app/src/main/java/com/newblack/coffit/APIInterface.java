@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -53,7 +54,7 @@ public interface APIInterface {
     Call<Schedule> putSchedule(@Body Schedule schedule, @Path("scheduleId") int scheduleId, @Query("iAm") String iAm);
 
     @DELETE("schedules/{scheduleId}")
-    Call<Schedule> deleteSchedule(@Path("scheduleId") int scheduleId);
+    Call<ResponseBody> deleteSchedule(@Path("scheduleId") int scheduleId);
 
     @GET("schedules/students/{studentId}")
     Call<List<Schedule>> getSchedule(@Path("studentId") int studentId);

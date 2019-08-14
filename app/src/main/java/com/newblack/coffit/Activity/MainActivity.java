@@ -135,7 +135,10 @@ public class MainActivity extends AppCompatActivity {
 
         switch (id){
             case R.id.menu_search:
-                Toast.makeText(this,"찾기 버튼",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"노티 버튼",Toast.LENGTH_SHORT).show();
+                //for time test -> end!
+//                Intent intent2 = new Intent(this,TimeControlActivity.class);
+//                startActivity(intent2);
                 break;
             case R.id.menu_alarm:
                 Intent intent = new Intent(this,NotiActivity.class);

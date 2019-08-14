@@ -131,11 +131,15 @@ public class AddScheduleActivity extends AppCompatActivity {
                                 //확인 클릭 시 retrofit으로 스케줄 보내줘야함! 나중에 구현할 것
                                 HashMap<String, Object> schedule = new HashMap<>();
 
+
                                 Calendar cal = Calendar.getInstance();
                                 int hour = Integer.parseInt(time.split(":")[0]);
                                 int min = Integer.parseInt(time.split(":")[1]);
                                 cal.set(selectedDay.getYear(),selectedDay.getMonth(),selectedDay.getDay(),hour,min);
-                                Date date = new Date(cal.getTimeInMillis());
+
+                                Date date = DateUtils.forServerTime(selectedDay.getYear(),selectedDay.getMonth(),selectedDay.getDay(),hour,min);
+//                                String dateString = DateUtils.dateToString(date);
+                                Log.d("TAG", DateUtils.fromServerTime(date));
                                 schedule.put("state",0);
                                 schedule.put("date",date);
                                 schedule.put("is_trainer",false);

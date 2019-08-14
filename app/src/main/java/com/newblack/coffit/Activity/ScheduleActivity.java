@@ -44,6 +44,7 @@ public class ScheduleActivity extends AppCompatActivity {
     TextView tv_today;
     MaterialCalendarView calendar;
     List<Schedule> scheduleList;
+    List<Schedule> todayList;
     String today;
     String today_object;
     String selectedDay;
@@ -80,6 +81,7 @@ public class ScheduleActivity extends AppCompatActivity {
         today = dateFormat(CalendarDay.today());
         tv_today.setText(today);
         scheduleList = new ArrayList<>();
+        todayList = new ArrayList<>();
         //여기서 처음 한번 retrofit 돌려서 전체 스케쥴 받아오기!! 굳이 여러번 돌리지 맙시다
         retrofit_getSchedule();
 
@@ -98,7 +100,8 @@ public class ScheduleActivity extends AppCompatActivity {
             public void onItemClick(View v, int position) {
                 //여기서 스케줄 수정용 액티비티 띄우기
                 //액티비티 띄우는게 맞는 것 같아서 일단 다시 구현
-                Schedule schedule = scheduleList.get(position);
+                Log.d("TAG","list 길이 : " + todayList);
+                Schedule schedule = todayList.get(position);
                 Intent intent = new Intent(activity,ScheduleDialogActivity.class);
                 intent.putExtra("schedule",schedule);
                 startActivity(intent);
@@ -112,9 +115,8 @@ public class ScheduleActivity extends AppCompatActivity {
                 selectedDay = dateObject(date);
                 today = dateFormat(date);
                 tv_today.setText(today);
-                adapter.setSchedules(getTodaySchedule(date,scheduleList));
-
-                //레트로핏 결과에 따라 스케쥴 보여주기.. 스케쥴리스트를 잘 받아다가 ㅎㅎ
+                todayList = getTodaySchedule(date,scheduleList);
+                adapter.setSchedules(todayList);
 
             }
         });
@@ -146,7 +148,8 @@ public class ScheduleActivity extends AppCompatActivity {
                     Log.d("TAG" , "id " + test.getId()+ " time " +test.getDate());
                 }
                 //초기 화면만 설정
-                adapter.setSchedules(getTodaySchedule(CalendarDay.today(),scheduleList));
+                todayList = getTodaySchedule(CalendarDay.today(),scheduleList);
+                adapter.setSchedules(todayList);
             }
 
             @Override
@@ -166,11 +169,8 @@ public class ScheduleActivity extends AppCompatActivity {
         List<Schedule> result = new ArrayList<>();
         CalendarDay selected;
         for (Schedule schedule : schedules){
-            Date date = DateUtils.stringToDate(schedule.getDate());
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            selected = CalendarDay.from(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DATE));
-//            Log.d("TAG","selected : "+dateFormat(selected)+" 일치 여부 : "+ selected.equals(day));
+            Date date = schedule.getDate();
+            selected = DateUtils.getCalendarDay(date);
             if(selected.equals(day)){
                 //날짜 같을때 추가
                 result.add(schedule);
