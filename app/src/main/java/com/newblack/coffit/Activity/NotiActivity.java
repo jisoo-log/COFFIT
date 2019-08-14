@@ -44,6 +44,7 @@ public class NotiActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_noti);
+        activity = this;
 
         sp = getSharedPreferences("coffit",MODE_PRIVATE);
         id = sp.getInt("student_id",0);
