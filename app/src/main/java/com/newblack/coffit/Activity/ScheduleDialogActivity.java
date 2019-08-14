@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.newblack.coffit.APIClient;
 import com.newblack.coffit.APIInterface;
 import com.newblack.coffit.Data.Schedule;
+import com.newblack.coffit.DateUtils;
 import com.newblack.coffit.R;
 
 import org.w3c.dom.Text;
@@ -25,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ScheduleDialogActivity extends AppCompatActivity {
+public class ScheduleDialogActivity extends Activity {
     Schedule schedule;
     APIInterface apiInterface;
     Activity activity;
@@ -45,8 +46,8 @@ public class ScheduleDialogActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule_dialog);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_schedule_dialog);
         activity= this;
 
         //노티에서 오는 경우와 알람에서 오는 경우..
@@ -104,7 +105,7 @@ public class ScheduleDialogActivity extends AppCompatActivity {
                         //변경요청이라는 플래그, 기존 날짜, 기존 id 함께 넘김
                         Intent intent1 = new Intent(activity, AddScheduleActivity.class);
                         intent1.putExtra("edit",1);
-                        String date = dateObject(schedule.getDate());
+                        String date = dateObject(DateUtils.stringToDate(schedule.getDate()));
                         intent1.putExtra("date",date);
                         intent1.putExtra("pastId",schedule.getId());
                         startActivity(intent1);

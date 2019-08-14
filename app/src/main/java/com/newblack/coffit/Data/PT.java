@@ -20,33 +20,14 @@ public class PT implements Serializable {
     private Date startDate;
     @SerializedName("end_date")
     private Date endDate;
-    @SerializedName("trainerId")
+    @SerializedName("trainer_id")
     private int trainerId;
-    @SerializedName("studentId")
+    @SerializedName("student_id")
     private int studentId;
     @SerializedName("pt_room")
     private String ptRoom;
 
-    public class PTcomment{
-        @SerializedName("comment_id")
-        private int comment_id;
-        @SerializedName("comment")
-        private String comment;
-        @SerializedName("PT_id")
-        private int PT_id;
 
-        public String getComment() {
-            return comment;
-        }
-
-        public int getPT_id() {
-            return id;
-        }
-
-        public int getCommentId() {
-            return comment_id;
-        }
-    }
 
     public int getId(){
         return id;

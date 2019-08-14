@@ -11,4 +11,5 @@
     <color name="colorGrey">#c9e9ff</color>
     <color name="colorAvail">#7fdfff</color>
     <color name="colorDisavail">#c9e9ff</color>
+    <color name="colorBlack">#000000</color>
 </resources>

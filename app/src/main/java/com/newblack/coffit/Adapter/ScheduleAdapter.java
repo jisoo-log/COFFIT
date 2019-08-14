@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.newblack.coffit.Data.Schedule;
+import com.newblack.coffit.DateUtils;
 import com.newblack.coffit.R;
 
 import java.util.ArrayList;
@@ -45,9 +46,10 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
     @Override
     public void onBindViewHolder(@NonNull ScheduleAdapter.ScheduleHolder holder, int position) {
         Log.d("TAG", "timeAdapter onBindViewHolder : " + position);
+        //현재 회차를 제대로 셀 수 없음
         Schedule curSchedule = schedules.get(position);
-        int hh = curSchedule.getDate().getHours();
-        int mm = curSchedule.getDate().getMinutes();
+        int hh = DateUtils.stringToDate(curSchedule.getDate()).getHours();
+        int mm = DateUtils.stringToDate(curSchedule.getDate()).getMinutes();
         String time1 = hh + ":" + mm;
         String time2;
         if(mm==00){

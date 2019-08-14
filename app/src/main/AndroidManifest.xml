@@ -24,9 +24,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.CallActivity"></activity>
-        <activity android:name=".Activity.PTConnectActivity" />
-        <activity android:name=".Activity.ScheduleDialogActivity" />
+        <activity android:name=".Activity.ScheduleDialogActivity"
+            android:theme="@android:style/Theme.Holo.Light.Dialog"/>
         <activity android:name=".Activity.NotiActivity" />
         <activity android:name=".Activity.AddScheduleActivity" />
         <activity android:name=".Activity.ScheduleActivity" />
