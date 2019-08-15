@@ -98,7 +98,6 @@ public class TrainerAdapter extends RecyclerView.Adapter<TrainerAdapter.TrainerH
                         }
                     }
 
-                    Log.d("test", "position = "+ getAdapterPosition());
                 }
             });
 

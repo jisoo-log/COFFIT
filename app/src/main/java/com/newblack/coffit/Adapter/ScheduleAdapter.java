@@ -15,6 +15,7 @@ import com.newblack.coffit.DateUtils;
 import com.newblack.coffit.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ScheduleHolder> {
@@ -45,29 +46,33 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
 
     @Override
     public void onBindViewHolder(@NonNull ScheduleAdapter.ScheduleHolder holder, int position) {
-        Log.d("TAG", "timeAdapter onBindViewHolder : " + position);
-        //현재 회차를 제대로 셀 수 없음
+        Log.d("TAG", "scheduleAdapter onBindViewHolder : " + position);
+        //현재 회차를 제대로 셀 수 없
         Schedule curSchedule = schedules.get(position);
-        int hh = DateUtils.stringToDate(curSchedule.getDate()).getHours();
-        int mm = DateUtils.stringToDate(curSchedule.getDate()).getMinutes();
-        String time1 = hh + ":" + mm;
-        String time2;
-        if(mm==00){
+        Date date = curSchedule.getDate();
+        String newDate = DateUtils.fromServerTime(date);
+        int hh = DateUtils.getValueFromDate(newDate,DateUtils.HOUR);
+        int mm = DateUtils.getValueFromDate(newDate,DateUtils.MINUTE);
+        String time1, time2;
+        if(mm==0){
+            time1 = hh + ":00";
             time2 = hh + ":30";
         }
         else{
+            time1 = hh + ":" + mm;
             time2 = (hh+1) + ":00";
         }
         String time = time1 + " ~ "+time2;
         holder.tv_time.setText(time);
         int ptNum = 0;
-        for(Schedule schedule : schedules){
-            //이번 pt가 몇번째인지 카운트 하는 용도. 나중엔 다른 방식이 나을듯
-            if(schedule.getState()==1 || schedule.getState()==4){
-                ptNum++;
-            }
-            Log.d("TAG","this pt num is "+ptNum);
-        }
+//        for(Schedule schedule : schedules){
+//            //이번 pt가 몇번째인지 카운트 하는 용도. 나중엔 다른 방식이 나을듯
+//            //지금 리스트에 전체가 들어있지 않아서 쓸 수 없는 것임.
+//            if(schedule.getState()==1 || schedule.getState()==4){
+//                ptNum++;
+//            }
+//            Log.d("TAG","this pt num is "+ptNum);
+//        }
         String ptNumInfo = ptNum +"회차 PT";
         holder.tv_ptnum.setText(ptNumInfo);
         holder.tv_state.setText(curSchedule.stateText().get(0));
@@ -102,14 +107,15 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
+                    Log.d("test", "position = "+ getAdapterPosition());
                     if(position != RecyclerView.NO_POSITION) {
                         if (mListener != null) {
                             //위치와 id까지 한번에 가져올 수 있도록
+                            Log.d("TAG", "클릭 위치 : "+position);
                             mListener.onItemClick(v, position);
+
                         }
                     }
-
-                    Log.d("test", "position = "+ getAdapterPosition());
                 }
             });
         }

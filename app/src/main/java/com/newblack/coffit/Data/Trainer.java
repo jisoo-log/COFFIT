@@ -36,7 +36,7 @@ public class Trainer implements Serializable {
     @SerializedName("createdAt")
     public Date createdAt;
 //    public Date createdAt;
-    @SerializedName("trainer_additional_pictures")
+    @SerializedName("trainer_pictures")
     private List<ExtraPic> extraPics;
 
 
