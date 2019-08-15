@@ -31,6 +31,8 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -144,8 +146,17 @@ public class ScheduleActivity extends AppCompatActivity {
                 scheduleList.addAll(schedules);
                 Log.d("TAG","schedulelist size : " +scheduleList.size());
 
-                for(Schedule test : scheduleList){
-                    Log.d("TAG" , "id " + test.getId()+ " time " +test.getDate());
+                Collections.sort(scheduleList, new Comparator<Schedule>(){
+                    public int compare(Schedule s1, Schedule s2){
+                        return s1.getDate().compareTo(s2.getDate());
+                    }
+                });
+
+                //need to make count later
+                for(int i = 1; i< scheduleList.size(); i++){
+                    Schedule sc = scheduleList.get(i-1);
+                    sc.setCount(i);
+                    Log.d("TAG" , "id " + sc.getId()+ " time " +sc.getDate() + " count : "+ sc.getCount());
                 }
                 //초기 화면만 설정
                 todayList = getTodaySchedule(CalendarDay.today(),scheduleList);

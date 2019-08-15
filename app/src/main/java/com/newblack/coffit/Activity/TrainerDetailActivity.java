@@ -91,10 +91,6 @@ public class TrainerDetailActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PayActivity.class);
         //위의 정보 그대 가져가도 되는건가? 그러면 클래스를 아예 넘겨주는 편이 낫지 않을까 싶네
         Log.d("TAG","TrainerDetailActivity : clickApply 진입");
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("Trainer", trainer);
-//
-//        intent.putExtras(bundle);
         intent.putExtra("Trainer",trainer);
         startActivity(intent);
 

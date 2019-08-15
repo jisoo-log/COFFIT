@@ -189,7 +189,7 @@
                     android:id="@+id/tv_refund_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="환불정책은" />
+                    android:text="@string/refund" />
             </LinearLayout>
 
         </LinearLayout>

@@ -4,4 +4,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="refund">결제 전 꼭 확인 부탁 드립니다.\n\n1. 개인의 부득이한 사정으로 환불을 진행할 시, 진행한 PT에 해당하는 금액과
+        총 이용금액의 10%를 공제한 후 환급합니다.\n2. 만료일이 지난 이후의 PT는 자동 소멸 되며 환불 및 양도 불가합니다. </string>
+
+
 </resources>

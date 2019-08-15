@@ -42,6 +42,8 @@ public class Schedule implements Serializable {
     @SerializedName("student_id")
     private int studentId;
 
+    private int count;
+
     //테스트용
     @SerializedName("createdAt")
     public Date createdAt;
@@ -61,6 +63,14 @@ public class Schedule implements Serializable {
 
     public Date getDate() {
         return date;
+    }
+
+    public void setCount(int count){
+        this.count = count;
+    }
+
+    public int getCount(){
+        return count;
     }
 
 
