@@ -86,7 +86,9 @@ public class HomeFragment extends Fragment {
         btn_startpt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).goPT();
+
+                String ptRoom = sp.getString("pt_room","");
+                ((MainActivity)getActivity()).goPT(ptRoom);
             }
         });
 

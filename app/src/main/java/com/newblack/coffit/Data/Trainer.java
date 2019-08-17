@@ -40,7 +40,7 @@ public class Trainer implements Serializable {
     private List<ExtraPic> extraPics;
 
 
-    public class ExtraPic{
+    public class ExtraPic implements Serializable{
         @SerializedName("id")
         private int id;
         @SerializedName("picture_url")

@@ -27,6 +27,7 @@ import com.newblack.coffit.DateUtils;
 import com.newblack.coffit.R;
 import com.newblack.coffit.Response.TrainerScheduleResponse;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
@@ -175,7 +176,7 @@ public class AddScheduleActivity extends AppCompatActivity {
 
         //캘린더 초기화
         calendar = findViewById(R.id.calendar);
-
+        calendar.state().edit().setCalendarDisplayMode(CalendarMode.WEEKS).commit();
         calendar.setSelectedDate(initial);
         checkDate(initial);
         today = dateFormat(initial);
@@ -283,12 +284,8 @@ public class AddScheduleActivity extends AppCompatActivity {
         List<TrainerSchedule> result = new ArrayList<>();
         CalendarDay selected;
         for (TrainerSchedule schedule : schedules){
-            Date date = DateUtils.stringToDate(schedule.getStartTime());
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            selected = CalendarDay.from(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DATE));
-//            Log.d("TAG","selected : "+dateFormat(selected)+" 일치 여부 : "+ selected.equals(day));
-
+            Date date = schedule.getStartTime();
+            selected = DateUtils.getCalendarDay(date);
             if(selected.equals(day)){
                 //날짜 같을때 추가
                 result.add(schedule);
@@ -296,4 +293,5 @@ public class AddScheduleActivity extends AppCompatActivity {
         }
         return result;
     }
+
 }

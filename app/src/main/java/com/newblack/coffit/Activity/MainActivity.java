@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentTransaction ft;
     SharedPreferences sp;
     boolean PTing;
+    String ptRoom;
 
     private TrainerFragment trainerFragment;
     private HomeFragment homeFragment;
@@ -193,17 +194,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goPT(){
-        Toast.makeText(this, "PT 시작!!",Toast.LENGTH_SHORT).show();
-//        Intent intent = new Intent(this, PTConnectActivity.class);
-////        String ptRoom = sp.getString("pt_room","");
-//        String ptRoom = "hello";
-//        if(ptRoom.equals("")){
-//            Toast.makeText(this,"Room이 없습니다",Toast.LENGTH_SHORT).show();
-//        }
-//        else{
-//            intent.putExtra("pt_room",ptRoom);
-//            startActivity(intent);
-//        }
+    public void goPT(String ptRoom){
+//        Toast.makeText(this, "PT 시작!!",Toast.LENGTH_SHORT).show();
+        Intent intent=new Intent(this,com.example.webrtc.android.ConnectActivity.class);
+//        room_number = 1323232323;
+        intent.putExtra("room_number",ptRoom);
+        startActivity(intent);
     }
 }

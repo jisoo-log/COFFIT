@@ -74,8 +74,6 @@ public class ScheduleActivity extends AppCompatActivity {
         studentId = sp.getInt("student_id",0);
 
 
-
-//        calendar.addDecorators(new SundayDecorator(), new SaturdayDecorator(), oneDayDecorater);
         calendar = findViewById(R.id.calendar);
         calendar.setSelectedDate(CalendarDay.today());
         today_object = dateObject(CalendarDay.today());
@@ -87,10 +85,6 @@ public class ScheduleActivity extends AppCompatActivity {
         //여기서 처음 한번 retrofit 돌려서 전체 스케쥴 받아오기!! 굳이 여러번 돌리지 맙시다
         retrofit_getSchedule();
 
-
-
-
-        //받아온 것 중 그 날짜에 맞는 것 표시하도록 - 오 여기 머리아프겠다...
 
         recyclerView = findViewById(R.id.rv_schedule);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -171,8 +165,6 @@ public class ScheduleActivity extends AppCompatActivity {
         });
     }
 
-
-    //날짜별 캘린더 색 설정
 
 
     //오늘 날짜의 스케줄만 가져오는 용도

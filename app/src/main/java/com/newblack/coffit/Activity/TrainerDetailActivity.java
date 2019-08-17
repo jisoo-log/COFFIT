@@ -93,7 +93,6 @@ public class TrainerDetailActivity extends AppCompatActivity {
         Log.d("TAG","TrainerDetailActivity : clickApply 진입");
         intent.putExtra("Trainer",trainer);
         startActivity(intent);
-
     }
 
 

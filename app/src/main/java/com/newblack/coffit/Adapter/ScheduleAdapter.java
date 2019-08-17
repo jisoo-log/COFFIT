@@ -65,14 +65,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         String time = time1 + " ~ "+time2;
         holder.tv_time.setText(time);
         int ptNum = 0;
-//        for(Schedule schedule : schedules){
-//            //이번 pt가 몇번째인지 카운트 하는 용도. 나중엔 다른 방식이 나을듯
-//            //지금 리스트에 전체가 들어있지 않아서 쓸 수 없는 것임.
-//            if(schedule.getState()==1 || schedule.getState()==4){
-//                ptNum++;
-//            }
-//            Log.d("TAG","this pt num is "+ptNum);
-//        }
+
         String ptNumInfo = ptNum +"회차 PT";
         holder.tv_ptnum.setText(ptNumInfo);
         holder.tv_state.setText(curSchedule.stateText().get(0));
@@ -92,6 +85,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
 
     //ScheduleHolder 클래스 부분
     class ScheduleHolder extends RecyclerView.ViewHolder {
+        //TODO : need to add count
         private TextView tv_ptnum;
         private TextView tv_time;
         private TextView tv_state;
