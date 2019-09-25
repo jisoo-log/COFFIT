@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.newblack.coffit.Data.Student;
 import com.newblack.coffit.Fragment.AccountFragment;
 import com.newblack.coffit.Fragment.HomeFragment;
 import com.newblack.coffit.Fragment.HomeNewFragment;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     FragmentTransaction ft;
     SharedPreferences sp;
     boolean PTing;
+    //TODO : need to get id when ppl login
+    public static int myId = 3;
+    public static boolean hasPT;
 
     private TrainerFragment trainerFragment;
     private HomeFragment homeFragment;
@@ -66,8 +70,18 @@ public class MainActivity extends AppCompatActivity {
         //결제 여부에 따라 변경 필요!
         //일단 지금은 선생 이름이 있으면 결제한 것으로 판단.. -> 나중에 문제가 생길까?
         sp = getSharedPreferences("coffit",MODE_PRIVATE);
-        String trainer_name = sp.getString("trainer_name","none");
-        if(trainer_name.equals("none")){
+//        SharedPreferences.Editor editor = sp.edit();
+//        editor.clear();
+////        editor.putBoolean("hasPT",true);
+//        editor.commit();
+////        editor.remove("pt_id");
+////        editor.remove("pt_room");
+////
+//        editor.putInt("student_id",1);
+
+        hasPT =sp.getBoolean("hasPT",false);
+//        String trainer_name = sp.getString("trainer_name","none");
+        if(!hasPT){
             PTing = false;
             setFrag(T_FRAGMENT);
         }
@@ -193,17 +207,18 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goPT(){
-        Toast.makeText(this, "PT 시작!!",Toast.LENGTH_SHORT).show();
-//        Intent intent = new Intent(this, PTConnectActivity.class);
-////        String ptRoom = sp.getString("pt_room","");
-//        String ptRoom = "hello";
-//        if(ptRoom.equals("")){
-//            Toast.makeText(this,"Room이 없습니다",Toast.LENGTH_SHORT).show();
-//        }
-//        else{
-//            intent.putExtra("pt_room",ptRoom);
-//            startActivity(intent);
-//        }
+    public void goPT(String ptRoom){
+//        Toast.makeText(this, "PT 시작!!",Toast.LENGTH_SHORT).show();
+        Intent intent=new Intent(this,com.example.webrtc.android.ConnectActivity.class);
+//        room_number = 1323232323;
+        Log.d("TAG", "room number : "+ptRoom);
+        intent.putExtra("room_number",ptRoom);
+        startActivity(intent);
+    }
+
+    public void editProfile(Student student){
+        Intent intent = new Intent(this, ProfileEditActivitiy.class);
+        intent.putExtra("content",student);
+        startActivity(intent);
     }
 }

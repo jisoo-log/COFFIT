@@ -102,16 +102,12 @@ public class TrainerFragment extends Fragment  {
                 Log.d("TAG", "apiInterface callback onResponse");
                 TrainerResponse hr = response.body();
 
-                //트레이너 설정
                 List<Trainer> trainers = hr.getTrainers();
-                for (Trainer trainer : trainers ){
-                    trainerList.add(trainer);
-                    Log.d("TAG", "check trainer name : "+trainer.getUsername());
-                    Log.d("TAG", "check trainer name : "+trainer.getAt());
+                if(trainers != null) {
+                    trainerList.addAll(trainers);
+                    adapter.setTrainers(trainerList);
                 }
-                adapter.setTrainers(trainerList);
 
-                //배너 설정
                 List<Banner> banners = hr.getBanners();
                 Random r = new Random();
                 int i = r.nextInt(banners.size()-1);

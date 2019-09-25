@@ -51,9 +51,8 @@ public class TrainerAdapter extends RecyclerView.Adapter<TrainerAdapter.TrainerH
         Trainer curTrainer = trainers.get(position);
         holder.tv_summary.setText(curTrainer.getSummary());
         holder.tv_username.setText(curTrainer.getUsername());
-        holder.rating.setRating(curTrainer.getStar());
+//        holder.rating.setRating(curTrainer.getStar());
         //holder.tv_numreview.setText(curTrainer.getNumReview());
-        //이미지처리 나중에
         Picasso.get().load(curTrainer.getPictureURL()).into(holder.iv_mainpic);
 
     }
@@ -69,7 +68,6 @@ public class TrainerAdapter extends RecyclerView.Adapter<TrainerAdapter.TrainerH
         notifyDataSetChanged();
     }
 
-    //TrainerHolder 클래스 부분
     class TrainerHolder extends RecyclerView.ViewHolder{
         private ImageView iv_mainpic;
         private TextView tv_summary;
@@ -77,15 +75,13 @@ public class TrainerAdapter extends RecyclerView.Adapter<TrainerAdapter.TrainerH
         private TextView tv_numreview;
         private RatingBar rating;
 
-
-        public TrainerHolder(@NonNull View itemView) {
+        TrainerHolder(@NonNull View itemView) {
             super(itemView);
             tv_summary = itemView.findViewById(R.id.tv_summary);
             tv_numreview = itemView.findViewById(R.id.tv_numreview);
             iv_mainpic = itemView.findViewById(R.id.iv_mainpic);
             tv_username = itemView.findViewById(R.id.tv_username);
             rating = itemView.findViewById(R.id.rating);
-
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

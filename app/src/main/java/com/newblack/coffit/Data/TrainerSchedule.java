@@ -16,20 +16,15 @@ public class TrainerSchedule implements Serializable {
 //    @SerializedName("start_time")
 //    private Date startTime;
     @SerializedName("start_time")
-    private String startTime;
+    private Date startTime;
     @SerializedName("available")
     private boolean availability;
-
-    private Date startTime_date;
 
     public int getId() {
         return id;
     }
 
-//    public Date getStartTime() {
-//        return startTime;
-//    }
-    public String getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
@@ -38,10 +33,12 @@ public class TrainerSchedule implements Serializable {
     }
 
     public String getStringTime(){
-        Date date = DateUtils.stringToDate(startTime);
-        int hour = date.getHours();
-        int min = date.getMinutes();
+        Date date = this.startTime;
+        String newDate = DateUtils.fromServerTime(date);
+        String hour = DateUtils.timeNumberToString(DateUtils.getValueFromDate(newDate,DateUtils.HOUR));
+        String min = DateUtils.timeNumberToString(DateUtils.getValueFromDate(newDate,DateUtils.MINUTE));
         System.out.println("hour :" + hour + " min : "+min);
         return hour + ":" + min;
     }
+
 }

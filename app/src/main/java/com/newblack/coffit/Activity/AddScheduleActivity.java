@@ -27,6 +27,7 @@ import com.newblack.coffit.DateUtils;
 import com.newblack.coffit.R;
 import com.newblack.coffit.Response.TrainerScheduleResponse;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
@@ -46,12 +47,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.newblack.coffit.Activity.MainActivity.myId;
 import static com.newblack.coffit.Activity.ScheduleActivity.dateFormat;
 
 public class AddScheduleActivity extends AppCompatActivity {
     Activity activity;
     SharedPreferences sp;
-    int studentId;
+    int studentId = myId;
     int trainerId;
     int pt_id;
     APIInterface apiInterface;
@@ -88,7 +90,7 @@ public class AddScheduleActivity extends AppCompatActivity {
         trainerScheduleList = new ArrayList<>();
 
         sp = getSharedPreferences("coffit", Context.MODE_PRIVATE);
-        studentId = sp.getInt("student_id",0);
+//        studentId = myId;
         trainerId = sp.getInt("trainer_id", 0);
         pt_id = sp.getInt("pt_id",0);
         Log.d("TAG", "studentId : " +studentId + " trainerId" + trainerId + " pt_id :"+ pt_id );
@@ -175,7 +177,7 @@ public class AddScheduleActivity extends AppCompatActivity {
 
         //캘린더 초기화
         calendar = findViewById(R.id.calendar);
-
+        calendar.state().edit().setCalendarDisplayMode(CalendarMode.WEEKS).commit();
         calendar.setSelectedDate(initial);
         checkDate(initial);
         today = dateFormat(initial);
@@ -189,8 +191,6 @@ public class AddScheduleActivity extends AppCompatActivity {
             }
         });
 
-        //트레이너 스케줄 받아와서 리스트에 저장
-        //여기서 순서 꼬이지 않도록 주의해야함. 초기 데이터는 넣자.
         retrofit_getTrainerSchedule();
     }
 
@@ -208,8 +208,6 @@ public class AddScheduleActivity extends AppCompatActivity {
             mRecyclerView.setVisibility(View.INVISIBLE);
         }
         else {
-            //오늘부터 2주 내의 날짜를 선택했다면 retrofit으로 트레이너 스케줄 가져옴
-            //retrofit에서 받아왔을 데이터 가지고 ["6:00","7:30",.. ] 이런 리스트를 만들어서 넣을 것임
 
             mRecyclerView.setVisibility(View.VISIBLE);
             Log.d("TAG","리스트 사이즈 : "+ trainerScheduleList.size());
@@ -235,16 +233,16 @@ public class AddScheduleActivity extends AppCompatActivity {
         Call<TrainerScheduleResponse> call = apiInterface.getTrainerSchedule(trainerId);
         call.enqueue(new Callback<TrainerScheduleResponse>(){
             @Override
-            public void onResponse(Call<TrainerScheduleResponse> call, Response<TrainerScheduleResponse> response) {
+            public void onResponse(Call<TrainerScheduleResponse> call,
+                                   Response<TrainerScheduleResponse> response) {
                 Log.d("TAG", "apiInterface callback onResponse");
                 TrainerScheduleResponse scheduleResponse = response.body();
-                trainerScheduleList.addAll(scheduleResponse.getAvailables());
-
-
-                //초기 화면만 설정
-                if (trainerScheduleList.size() != 0) {
-                    adapter.setTimes(getTodaySchedule(initial, trainerScheduleList));
-                    tv_info.setText("모든 수업은 30분 단위로 진행됩니다.\n아래에서 가능한 수업 시간을 골라주세요.");
+                if(scheduleResponse!= null) {
+                    trainerScheduleList.addAll(scheduleResponse.getAvailables());
+                    if (trainerScheduleList.size() != 0) {
+                        adapter.setTimes(getTodaySchedule(initial, trainerScheduleList));
+                        tv_info.setText("모든 수업은 30분 단위로 진행됩니다.\n아래에서 가능한 수업 시간을 골라주세요.");
+                    }
                 }
             }
             @Override
@@ -255,40 +253,33 @@ public class AddScheduleActivity extends AppCompatActivity {
         });
     }
 
-    //새로운 스케줄 만들기
+    //post new schedule
     public void retrofit_postSchedule(HashMap<String,Object> schedule){
         apiInterface = APIClient.getClient().create(APIInterface.class);
         apiInterface.postSchedule(schedule).enqueue(new Callback<Schedule>() {
             @Override
-            public void onResponse(@NonNull Call<Schedule> call, @NonNull Response<Schedule> response) {
+            public void onResponse(@NonNull Call<Schedule> call,
+                                   @NonNull Response<Schedule> response) {
                 Toast.makeText(activity,"예약 요청을 보냈습니다",Toast.LENGTH_SHORT).show();
-
-//                Intent intent = new Intent(activity, ScheduleActivity.class);
-//                startActivity(intent);
                 finish();
 
             }
 
             @Override
             public void onFailure(Call<Schedule> call, Throwable t) {
-                Log.d("TAG", "통신 실패");
+                Log.d("TAG", "retrofit fail");
                 Toast.makeText(activity, "통신 오류 발생",Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    //오늘 날짜의 스케줄만 가져오는 용도
     public List<TrainerSchedule> getTodaySchedule(CalendarDay day, List<TrainerSchedule> schedules ){
         List<TrainerSchedule> result = new ArrayList<>();
         CalendarDay selected;
         for (TrainerSchedule schedule : schedules){
-            Date date = DateUtils.stringToDate(schedule.getStartTime());
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            selected = CalendarDay.from(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DATE));
-//            Log.d("TAG","selected : "+dateFormat(selected)+" 일치 여부 : "+ selected.equals(day));
-
+            Date date = schedule.getStartTime();
+            selected = DateUtils.getCalendarDay(date);
             if(selected.equals(day)){
                 //날짜 같을때 추가
                 result.add(schedule);
@@ -296,4 +287,5 @@ public class AddScheduleActivity extends AppCompatActivity {
         }
         return result;
     }
+
 }

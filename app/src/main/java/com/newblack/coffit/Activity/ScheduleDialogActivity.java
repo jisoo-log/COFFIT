@@ -56,7 +56,7 @@ public class ScheduleDialogActivity extends Activity {
         activity= this;
         sp = getSharedPreferences("coffit",MODE_PRIVATE);
 
-        //노티에서 오는 경우와 알람에서 오는 경우..
+        //TODO : Need to consider dialog come from noti later
         Intent intent = getIntent();
         schedule = (Schedule) intent.getSerializableExtra("schedule");
         cv_btn = findViewById(R.id.cv_btn);
