@@ -65,11 +65,10 @@ public class TrainerListFragment extends Fragment implements MainActivity.onKeyB
         });
 
         retrofit_getTrainer();
-
         return view;
     }
 
-    public void retrofit_getTrainer(){
+    private void retrofit_getTrainer(){
         apiInterface = APIClient.getClient().create(APIInterface.class);
 
         Call<List<Trainer>> call = apiInterface.getTrainerList();
@@ -79,15 +78,10 @@ public class TrainerListFragment extends Fragment implements MainActivity.onKeyB
                 Log.d("TAG", "apiInterface callback onResponse");
                 List<Trainer> trainers = response.body();
                 if(trainers != null) {
-                    for (Trainer trainer : trainers) {
-                        trainerList.add(trainer);
-                        Log.d("TAG", "check trainer name : " + trainer.getUsername());
-                    }
+                    trainerList.addAll(trainers);
+                    adapter.setTrainers(trainerList);
                 }
-                adapter.setTrainers(trainerList);
-                Log.d("TAG", "check trainers size : " + trainers.size());
             }
-
             @Override
             public void onFailure(Call<List<Trainer>> call, Throwable t) {
                 Log.d("TAG", "통신 실패");

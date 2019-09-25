@@ -138,6 +138,7 @@
             android:layout_weight="1"
             android:textAlignment="center"
             android:gravity="center"
+            android:textColor="@color/colorWhite"
             android:background="@color/colorDark"/>
         <TextView
             android:id="@+id/tv_right"
@@ -146,6 +147,7 @@
             android:layout_weight="1"
             android:textAlignment="center"
             android:gravity="center"
+            android:textColor="@color/colorWhite"
             android:background="@color/colorMain"/>
 
         </LinearLayout>

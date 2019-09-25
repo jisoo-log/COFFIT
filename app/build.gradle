@@ -36,7 +36,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
-    implementation project(path : ":webrtcapp")
+    implementation project(path: ":webrtcapp")
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
 
 
     //room 사용

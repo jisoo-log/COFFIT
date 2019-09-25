@@ -25,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.TimeControlActivity"></activity>
+        <activity android:name=".Activity.ProfileEditActivitiy"></activity>
+        <activity android:name=".Activity.TimeControlActivity" />
         <activity
             android:name=".Activity.ScheduleDialogActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
@@ -47,8 +48,7 @@
             android:configChanges="orientation|smallestScreenSize|screenSize|screenLayout"
             android:label="@string/app_name"
             android:screenOrientation="fullUser"
-            android:theme="@style/CallActivityTheme">
-        </activity>
+            android:theme="@style/CallActivityTheme"></activity>
     </application>
 
 </manifest>

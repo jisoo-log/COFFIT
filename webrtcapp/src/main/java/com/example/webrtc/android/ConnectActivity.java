@@ -120,6 +120,8 @@ public class ConnectActivity extends AppCompatActivity {
 //    addFavoriteButton.setOnClickListener(addFavoriteListener);
 
     // If an implicit VIEW intent is launching the app, go directly to that URL.
+
+
     final Intent intent = getIntent();
     if ("android.intent.action.VIEW".equals(intent.getAction()) && !commandLineRun) {
       boolean loopback = intent.getBooleanExtra(CallActivity.EXTRA_LOOPBACK, false);
@@ -133,10 +135,9 @@ public class ConnectActivity extends AppCompatActivity {
     Bundle extras = intent.getExtras();
     if (extras != null){
       if (extras.containsKey("room_number")){
-        Log.d("ABC","A site");
-        room_number = extras.getString("room_number", "2323");
-        connectToRoom(room_number, false, false, false, 0);
-        Log.d("ABC","B site");
+        room_number = extras.getString("room_number", "default");
+        connectToRoom(room_number, false, false, false,
+                0);
         finish();
       }
 

@@ -8,7 +8,7 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     android:layout_margin="10dp"
-    android:padding="10dp"
+    android:padding="5dp"
     android:background="@drawable/border_main">
 
         <ImageView
@@ -24,7 +24,7 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
-            android:id="@+id/tv_pt_student"
+            android:id="@+id/tv_pt_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -44,7 +44,7 @@
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/iv_fitness"
-            app:layout_constraintTop_toBottomOf="@id/tv_pt_student" />
+            app:layout_constraintTop_toBottomOf="@id/tv_pt_num" />
 
         <TextView
             android:id="@+id/tv_state"

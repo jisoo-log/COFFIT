@@ -33,6 +33,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.newblack.coffit.Activity.MainActivity.myId;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,7 +54,7 @@ public class HomeFragment extends Fragment {
     ImageView iv_mainpic;
     TextView tv_comment;
     TextView tv_ptnum;
-    int studentId;
+    int studentId = myId;
 
 
 
@@ -103,13 +105,9 @@ public class HomeFragment extends Fragment {
         //받아올 때 pt_id 초기 저장
         //일단 지금은 무조건 지우고 새로 만들자. 다만 나중에는 수정해줘야함
         //임시 아이디 1번으로 테스트
-        SharedPreferences.Editor editor = sp.edit();
-        editor.remove("pt_id");
-        editor.remove("pt_room");
-        editor.putInt("student_id",1);
-        editor.commit();
 
-        studentId = sp.getInt("student_id",0);
+
+//        studentId = sp.getInt("student_id",0);
         ptIdExist = !(sp.getInt("pt_id",0)==0);
         ptRoomExist = !(sp.getString("pt_room","").equals(""));
 //        Log.d("TAG", "ptIdExist : " + ptIdExist + "ptRoomExist : "+ptRoomExist);
@@ -137,36 +135,29 @@ public class HomeFragment extends Fragment {
                 Log.d("TAG", "apiInterface callback onResponse");
                 HomeResponse hr = response.body();
                 PT pt = hr.getPt();
+                if(pt!=null){
 
-//                받아온걸로 데이터 세팅
-                PTComment comment = hr.getPtComment();
-                List<Schedule> schedules = hr.getSchedules();
-                String info = pt.getRestNum()+ "회 완료 " +"(전체 "+ pt.getTotalNum()+"회 중)";
-                tv_ptnum.setText(info);
+                    PTComment comment = hr.getPtComment();
+                    List<Schedule> schedules = hr.getSchedules();
+                    String info = (pt.getTotalNum()- pt.getRestNum())+ "회 완료 " +"(전체 "+ pt.getTotalNum()+"회 중)";
+                    tv_ptnum.setText(info);
 
-                if(!ptRoomExist){
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putInt("pt_id",pt.getId());
-                    editor.putString("pt_room",pt.getPtRoom());
-                    editor.commit();
+//                    if(!ptRoomExist){
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putInt("pt_id",pt.getId());
+                        editor.putString("pt_room",pt.getPtRoom());
+                        editor.commit();
 //                    Log.d("TAG","after get, pt_id : "+ sp.getInt("pt_id",0)+" ptroom : " + sp.getString("pt_room",""));
 
+//                    }
+
+                    if(comment !=null){
+                        tv_comment.setText(comment.getComment());
+                    }
+
                 }
 
-                if(comment !=null){
-                    tv_comment.setText(comment.getComment());
-                }
 
-//                int size = hrs.size();
-//                if(size > 0) {
-//                    HomeResponse hr = hrs.get(size - 1);
-//
-//
-//                }
-//                else {
-//                    Toast.makeText(activity, "PT가 없습니다",Toast.LENGTH_SHORT).show();
-//                    Log.d("TAG","HomeResponse : onResponse PT 데이터 존재 안함");
-//                }
 
             }
 

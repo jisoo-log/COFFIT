@@ -39,7 +39,6 @@ public class TrainerDetailActivity extends AppCompatActivity {
     Button btn_apply;
     Toolbar toolbar;
     LinearLayout lo_subpic;
-    Bitmap bitmap;
 
     //선택받은 트레이너 서버에서 정보 받아옴
     APIInterface apiInterface;
@@ -122,8 +121,11 @@ public class TrainerDetailActivity extends AppCompatActivity {
                     //추가 사진도 recyclerview로 해야하나,,,?
                     //일단 넣긴 하는데 정말 거지같은 코드라고 느껴진다..
                     if (pics != null) {
-                        for (int i = 1; i < pics.size() + 1; i++) {
+                        for (int i = 0; i < pics.size() + 1; i++) {
                             switch (i) {
+                                case 0:
+                                    lo_subpic.setVisibility(View.GONE);
+                                    break;
                                 case 1:
                                     Picasso.get().load(pics.get(i - 1).getUrl()).into(iv_subPic1);
                                     break;
@@ -138,7 +140,6 @@ public class TrainerDetailActivity extends AppCompatActivity {
                     }
                     else{
                         Log.d("TAG","retrofit_detail : no pics!!");
-                        lo_subpic.setVisibility(View.GONE);
                     }
                 }
 

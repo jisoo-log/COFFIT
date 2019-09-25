@@ -19,6 +19,8 @@ public class Student implements Serializable {
     private String phoneNum;
     @SerializedName("fcm_token")
     private String fcmToken;
+    @SerializedName("picture")
+    private String picture;
 
     public int getId() {
         return id;
@@ -46,5 +48,37 @@ public class Student implements Serializable {
 
     public String getFcmToken() {
         return fcmToken;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 }

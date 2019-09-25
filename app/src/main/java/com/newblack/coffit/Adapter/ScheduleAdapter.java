@@ -64,12 +64,11 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         }
         String time = time1 + " ~ "+time2;
         holder.tv_time.setText(time);
-        int ptNum = 0;
+        int ptNum = curSchedule.getPTId();
 
         String ptNumInfo = ptNum +"회차 PT";
         holder.tv_ptnum.setText(ptNumInfo);
         holder.tv_state.setText(curSchedule.stateText().get(0));
-
     }
 
     @Override
@@ -93,7 +92,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
 
         public ScheduleHolder(@NonNull View itemView) {
             super(itemView);
-            tv_ptnum = itemView.findViewById(R.id.tv_ptnum);
+            tv_ptnum = itemView.findViewById(R.id.tv_pt_num);
             tv_time = itemView.findViewById(R.id.tv_time);
             tv_state = itemView.findViewById(R.id.tv_state);
 

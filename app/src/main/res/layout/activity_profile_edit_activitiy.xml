@@ -4,16 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.AccountFragment">
+    tools:context=".Activity.ProfileEditActivitiy">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/toolbar"/>
+
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_profile"
         android:layout_width="250dp"
         android:layout_height="250dp"
+        android:src="@drawable/ic_person"
         android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <TableLayout
         android:layout_width="300dp"
@@ -34,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:text="이름"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:text="나이"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:text="이메일"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:text="연락처"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -95,37 +106,6 @@
 
 
     </TableLayout>
-    <TextView
-        android:id="@+id/tv_edit_profile"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="프로필 수정"
-        android:textSize="20sp"
-        android:gravity="center"
-        android:background="@color/colorMain"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
 
-
-    <!--<Button-->
-        <!--android:id="@+id/btn_pick"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="사진 고르기"-->
-        <!--app:layout_constraintTop_toBottomOf="@id/iv_profile"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent" />-->
-
-    <!--<Button-->
-        <!--android:id="@+id/btn_send"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="사진 전송하기"-->
-        <!--app:layout_constraintTop_toBottomOf="@id/btn_pick"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

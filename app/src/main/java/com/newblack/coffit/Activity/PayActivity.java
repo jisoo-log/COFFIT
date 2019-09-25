@@ -36,6 +36,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.newblack.coffit.Activity.MainActivity.H_FRAGMENT;
+import static com.newblack.coffit.Activity.MainActivity.myId;
 
 public class PayActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -49,7 +50,6 @@ public class PayActivity extends AppCompatActivity {
     RatingBar rating;
     ImageView iv_mainPic;
 
-
     int ptNum;
     Trainer trainer;
     APIInterface apiInterface;
@@ -60,7 +60,7 @@ public class PayActivity extends AppCompatActivity {
     //나중에 SharedPreference로 계정 정보 가지고 있을 것.
     //지금은 일단 임시로 넣어 놓겠음
     SharedPreferences sp;
-    int studentId;
+    int studentId = myId;
 
 
     @Override
@@ -69,7 +69,7 @@ public class PayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pay);
         activity = this;
         sp = getSharedPreferences("coffit",MODE_PRIVATE);
-        studentId = sp.getInt("studentId",1);
+//        studentId = sp.getInt("studentId",1);
 
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("PT 결제");
@@ -179,6 +179,8 @@ public class PayActivity extends AppCompatActivity {
                 editor.putString("trainer_name",name);
                 editor.putString("trainer_pic",pic);
                 editor.putString("summary",summary);
+                sp = getSharedPreferences("coffit",MODE_PRIVATE);
+                editor.putBoolean("hasPT",true);
                 editor.commit();
 
 
