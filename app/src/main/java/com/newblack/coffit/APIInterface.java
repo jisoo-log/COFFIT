@@ -73,13 +73,19 @@ public interface APIInterface {
     @GET("notifications/students/{id}")
     Call<List<NotiResponse>> getNotiList(@Path("id") int studentId);
 
-    @GET("student/{studentId}")
+    @GET("students/{studentId}")
     Call<Student> getStudent(@Path("studentId") int studentId);
 
-    @PUT("student/{studentId}")
+    @PUT("students/{studentId}")
     Call<JsonObject> putStudent(@Body JsonObject param, @Path("studentId") int studentId);
 
     @Multipart
-    @POST("/upload")
-    Call<ResponseBody> uploadImage(@Part MultipartBody.Part file, @Part("name") RequestBody requestBody);
+    @PUT("students/{studentId}")
+    Call<ResponseBody> putStudentForm(@Part MultipartBody.Part file,
+                                      @Part("username") RequestBody name,
+                                      @Part("email") RequestBody email,
+                                      @Part("age") RequestBody age,
+                                      @Part("phone_number") RequestBody phone,
+                                      @Path("studentId") int studentId);
+
 }

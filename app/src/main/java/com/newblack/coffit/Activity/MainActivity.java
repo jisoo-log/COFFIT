@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void editProfile(Student student){
         Intent intent = new Intent(this, ProfileEditActivitiy.class);
-        intent.putExtra("content",student);
+        intent.putExtra("student",student);
         startActivity(intent);
     }
 }

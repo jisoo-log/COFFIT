@@ -87,10 +87,10 @@ public class AccountFragment extends Fragment {
             @Override
             public void onResponse(Call<Student> call, Response<Student> response){
                 Log.d("TAG", "apiInterface callback onResponse");
-                Student student = response.body();
+                student = response.body();
                 if(student != null){
                     tv_name.setText(student.getUsername());
-                    tv_age.setText(student.getAge());
+                    tv_age.setText(String.valueOf(student.getAge()));
                     tv_phone.setText(student.getPhoneNum());
                     tv_email.setText(student.getEmail());
                     Picasso.get().load(student.getPicture()).into(iv_profile);
