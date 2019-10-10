@@ -23,6 +23,7 @@ import com.newblack.coffit.Activity.MainActivity;
 import com.newblack.coffit.Data.PT;
 import com.newblack.coffit.Data.PTComment;
 import com.newblack.coffit.Data.Schedule;
+import com.newblack.coffit.Data.Trainer;
 import com.newblack.coffit.R;
 import com.newblack.coffit.Response.HomeResponse;
 import com.squareup.picasso.Picasso;
@@ -42,6 +43,7 @@ import static com.newblack.coffit.Activity.MainActivity.myId;
 public class HomeFragment extends Fragment {
     Button btn_schedule;
     Button btn_startpt;
+    Button btn_exercise;
     APIInterface apiInterface;
 
     SharedPreferences sp;
@@ -56,6 +58,7 @@ public class HomeFragment extends Fragment {
     TextView tv_ptnum;
     int studentId = myId;
 
+    MainActivity main;
 
 
 
@@ -69,12 +72,21 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
         activity = getActivity();
         tv_summary = view.findViewById(R.id.tv_summary);
         tv_username = view.findViewById(R.id.tv_username);
         tv_ptnum = view.findViewById(R.id.tv_ptnum);
         tv_comment = view.findViewById(R.id.tv_comment);
         iv_mainpic = view.findViewById(R.id.iv_mainpic);
+
+        btn_exercise = view.findViewById(R.id.btn_exercise);
+        btn_exercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity)getActivity()).goMission();
+            }
+        });
 
         btn_schedule = view.findViewById(R.id.btn_schedule);
         btn_schedule.setOnClickListener(new View.OnClickListener(){
@@ -108,22 +120,23 @@ public class HomeFragment extends Fragment {
 
 
 //        studentId = sp.getInt("student_id",0);
-        ptIdExist = !(sp.getInt("pt_id",0)==0);
-        ptRoomExist = !(sp.getString("pt_room","").equals(""));
+//        ptIdExist = !(sp.getInt("pt_id",0)==0);
+//        ptRoomExist = !(sp.getString("pt_room","").equals(""));
 //        Log.d("TAG", "ptIdExist : " + ptIdExist + "ptRoomExist : "+ptRoomExist);
 //        Log.d("TAG","before get, pt_id : "+ sp.getInt("pt_id",0)+" ptroom : " + sp.getString("pt_room",""));
-        String pic_url = sp.getString("trainer_pic","");
-        if(!pic_url.equals("")){
-            Picasso.get().load(pic_url).into(iv_mainpic);
-        }
+//        String pic_url = sp.getString("trainer_pic","");
+//        if(!pic_url.equals("")){
+//            Picasso.get().load(pic_url).into(iv_mainpic);
+//        }
 
-        //통신
-        retrofit_home();
         return view;
     }
 
-
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        retrofit_home();
+    }
 
     public void retrofit_home(){
         apiInterface = APIClient.getClient().create(APIInterface.class);
@@ -142,11 +155,12 @@ public class HomeFragment extends Fragment {
                     String info = (pt.getTotalNum()- pt.getRestNum())+ "회 완료 " +"(전체 "+ pt.getTotalNum()+"회 중)";
                     tv_ptnum.setText(info);
 
+
 //                    if(!ptRoomExist){
-                        SharedPreferences.Editor editor = sp.edit();
-                        editor.putInt("pt_id",pt.getId());
-                        editor.putString("pt_room",pt.getPtRoom());
-                        editor.commit();
+//                        SharedPreferences.Editor editor = sp.edit();
+//                        editor.putInt("pt_id",pt.getId());
+//                        editor.putString("pt_room",pt.getPtRoom());
+//                        editor.commit();
 //                    Log.d("TAG","after get, pt_id : "+ sp.getInt("pt_id",0)+" ptroom : " + sp.getString("pt_room",""));
 
 //                    }
@@ -154,17 +168,50 @@ public class HomeFragment extends Fragment {
                     if(comment !=null){
                         tv_comment.setText(comment.getComment());
                     }
-
+                    retrofit_detail(pt.getTrainerId());
                 }
-
-
-
+                else{
+                    ((MainActivity)getActivity()).PTing = false;
+                    ((MainActivity)getActivity()).setFrag(5);
+                }
             }
 
             @Override
             public void onFailure(Call<HomeResponse> call, Throwable t) {
                 t.printStackTrace();
                 Log.d("TAG", "통신 실패");
+                ((MainActivity)getActivity()).PTing = false;
+                ((MainActivity)getActivity()).setFrag(5);
+
+            }
+        });
+    }
+
+    public void retrofit_detail(int trainerId){
+        apiInterface = APIClient.getClient().create(APIInterface.class);
+
+        Call<Trainer> call = apiInterface.getTrainer(trainerId);
+        call.enqueue(new Callback<Trainer>(){
+            @Override
+            public void onResponse(Call<Trainer> call, Response<Trainer> response){
+                Log.d("TAG", "apiInterface callback onResponse");
+
+                //트레이너 가지고 화면 세팅
+                Trainer trainer = response.body();
+                if(trainer != null) {
+                    tv_summary.setText(trainer.getSummary());
+                    tv_username.setText(trainer.getUsername());
+                    Picasso.get().load(trainer.getPictureURL()).into(iv_mainpic);
+                    List<Trainer.ExtraPic> pics = trainer.getExtraPics();
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Trainer> call, Throwable t) {
+                Log.d("TAG", "통신 실패");
+
             }
         });
     }

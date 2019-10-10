@@ -27,11 +27,11 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
-        android:background="#FFFFFF"
+        android:background="?android:attr/windowBackground"
+        app:itemIconTint="@drawable/selector"
         android:layout_height="0dp"
         android:layout_weight="1"
         app:labelVisibilityMode="unlabeled"
-        app:itemIconTint="#000000"
         app:menu="@menu/bottom_menu"/>
 
 

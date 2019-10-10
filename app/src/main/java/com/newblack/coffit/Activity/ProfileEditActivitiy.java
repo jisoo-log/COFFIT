@@ -169,7 +169,6 @@ public class ProfileEditActivitiy extends AppCompatActivity {
         // Create MultipartBody.Part using file request-body,file name and part name
         MultipartBody.Part part = MultipartBody.Part.createFormData("profilePicture", file.getName(), fileReqBody);
         //Create request body with text description and text media type
-        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "image-type");
         RequestBody name = RequestBody.create(MediaType.parse("multipart/form-data"),
                 tv_name.getText().toString());
         RequestBody age = RequestBody.create(MediaType.parse("multipart/form-data"),
