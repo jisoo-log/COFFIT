@@ -77,7 +77,14 @@ dependencies {
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.0'
 
+    //firebase
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
+    implementation 'com.google.firebase:firebase-core:17.2.0'
+
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

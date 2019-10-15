@@ -128,5 +128,7 @@ public interface APIInterface {
     @PUT("/exerciseVideos/{excerciseVideoId}")
     Call<ResponseBody> putVideo(@Path("exerciseVideoId") int videoId, @Query("missionId") int mission_id);
 
+    @POST("/students/{studentId}/token")
+    Call<Student> postToken(@Body JsonObject param,  @Path("studentId") int student_id);
 
 }

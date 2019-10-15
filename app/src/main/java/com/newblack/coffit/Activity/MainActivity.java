@@ -6,8 +6,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,7 +18,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.gson.JsonObject;
+import com.newblack.coffit.APIClient;
+import com.newblack.coffit.APIInterface;
 import com.newblack.coffit.Data.Student;
 import com.newblack.coffit.Fragment.AccountFragment;
 import com.newblack.coffit.Fragment.HomeFragment;
@@ -25,9 +34,14 @@ import com.newblack.coffit.R;
 import com.newblack.coffit.Fragment.TrainerFragment;
 import com.newblack.coffit.Fragment.TrainerListFragment;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNav;
+    Activity activity;
     Toolbar toolbar;
     FragmentManager fm;
     FragmentTransaction ft;
@@ -35,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean PTing;
     //TODO : need to get id when ppl login
     public static int myId = 1;
-    public static boolean hasPT;
+    APIInterface apiInterface;
 
     private TrainerFragment trainerFragment;
     private HomeFragment homeFragment;
@@ -65,6 +79,24 @@ public class MainActivity extends AppCompatActivity {
         accountFragment = new AccountFragment();
         trainerListFragment = new TrainerListFragment();
         homeNewFragment = new HomeNewFragment();
+
+        activity = this;
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>(){
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("TAG", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        Log.d("TAG", "token : "+token);
+//                        Toast.makeText(activity,token,Toast.LENGTH_LONG).show();
+                        retrofit_token(token,myId);
+                    }
+                });
 
 
 
@@ -231,5 +263,22 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ProfileEditActivitiy.class);
         intent.putExtra("student",student);
         startActivity(intent);
+    }
+
+    public void retrofit_token(String token, int student_id){
+        JsonObject object = new JsonObject();
+        object.addProperty("fcm_token",token);
+        apiInterface = APIClient.getClient().create(APIInterface.class);
+        apiInterface.postToken(object,student_id).enqueue(new Callback<Student>(){
+            @Override
+            public void onResponse(Call<Student> call, Response<Student> response) {
+                Log.d("TAG","post token success");
+            }
+
+            @Override
+            public void onFailure(Call<Student> call, Throwable t) {
+                Log.d("TAG","post token failed");
+            }
+        });
     }
 }
