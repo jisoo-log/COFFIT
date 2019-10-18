@@ -92,6 +92,8 @@ public class TrainerFragment extends Fragment  {
         super.onStart();
     }
 
+
+
     public void retrofit_trainer(){
         apiInterface = APIClient.getClient().create(APIInterface.class);
 
@@ -110,7 +112,10 @@ public class TrainerFragment extends Fragment  {
 
                 List<Banner> banners = hr.getBanners();
                 Random r = new Random();
-                int i = r.nextInt(banners.size()-1);
+                int bound = banners.size()-1;
+                int i;
+                if (bound==-1) i = 0;
+                else i = bound;
                 Picasso.get().load(banners.get(i).getPictureURL()).into(iv_banner);
 
                 Log.d("TAG", "check trainers2 size : " + trainerList.size());

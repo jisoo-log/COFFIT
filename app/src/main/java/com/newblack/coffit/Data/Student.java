@@ -19,7 +19,7 @@ public class Student implements Serializable {
     private String phoneNum;
     @SerializedName("fcm_token")
     private String fcmToken;
-    @SerializedName("picture")
+    @SerializedName("picture_url")
     private String picture;
 
     public int getId() {

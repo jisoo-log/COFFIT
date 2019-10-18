@@ -32,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fm;
     FragmentTransaction ft;
     SharedPreferences sp;
-    boolean PTing;
+    public static boolean PTing;
     //TODO : need to get id when ppl login
-    public static int myId = 3;
+    public static int myId = 1;
     public static boolean hasPT;
 
     private TrainerFragment trainerFragment;
@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         bottomNav = findViewById(R.id.bottomNav);
 
+        PTing = true;
+
         //프래그먼트 정의
         trainerFragment = new TrainerFragment();
         homeFragment = new HomeFragment();
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         //결제 여부에 따라 변경 필요!
         //일단 지금은 선생 이름이 있으면 결제한 것으로 판단.. -> 나중에 문제가 생길까?
         sp = getSharedPreferences("coffit",MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sp.edit();
+        SharedPreferences.Editor editor = sp.edit();
 //        editor.clear();
 ////        editor.putBoolean("hasPT",true);
 //        editor.commit();
@@ -79,16 +81,19 @@ public class MainActivity extends AppCompatActivity {
 ////
 //        editor.putInt("student_id",1);
 
-        hasPT =sp.getBoolean("hasPT",false);
+//        hasPT =sp.getBoolean("hasPT",false);
 //        String trainer_name = sp.getString("trainer_name","none");
-        if(!hasPT){
-            PTing = false;
-            setFrag(T_FRAGMENT);
-        }
-        else{
-            PTing = true;
-            setFrag(H_FRAGMENT);
-        }
+
+        //TODO : set initial fragment
+        setFrag(H_FRAGMENT);
+//        if(!hasPT){
+//            PTing = false;
+//            setFrag(T_FRAGMENT);
+//        }
+//        else{
+//            PTing = true;
+//            setFrag(H_FRAGMENT);
+//        }
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -167,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
     //프래그먼트 전환
     public void setFrag(int n){
+        Log.d("TAG","check pt : "+PTing);
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
         switch(n){
@@ -207,6 +213,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void goMission(){
+        Intent intent = new Intent(this, MissionActivity.class);
+        startActivity(intent);
+    }
+
     public void goPT(String ptRoom){
 //        Toast.makeText(this, "PT 시작!!",Toast.LENGTH_SHORT).show();
         Intent intent=new Intent(this,com.example.webrtc.android.ConnectActivity.class);
@@ -218,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void editProfile(Student student){
         Intent intent = new Intent(this, ProfileEditActivitiy.class);
-        intent.putExtra("content",student);
+        intent.putExtra("student",student);
         startActivity(intent);
     }
 }
