@@ -40,6 +40,7 @@ dependencies {
 
     implementation project(path: ":webrtcapp")
     implementation 'de.hdodenhof:circleimageview:3.0.1'
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 
 
     //room 사용
@@ -80,6 +81,7 @@ dependencies {
     //firebase
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
     implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.github.nkzawa:socket.io-client:0.6.0'
 
 
     testImplementation 'junit:junit:4.12'

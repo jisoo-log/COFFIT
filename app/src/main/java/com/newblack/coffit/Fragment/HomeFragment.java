@@ -3,7 +3,6 @@ package com.newblack.coffit.Fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,14 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.newblack.coffit.APIClient;
 import com.newblack.coffit.APIInterface;
 import com.newblack.coffit.Activity.MainActivity;
 import com.newblack.coffit.Data.PT;
 import com.newblack.coffit.Data.PTComment;
-import com.newblack.coffit.Data.Schedule;
 import com.newblack.coffit.Data.Trainer;
 import com.newblack.coffit.R;
 import com.newblack.coffit.Response.HomeResponse;
@@ -46,7 +43,7 @@ public class HomeFragment extends Fragment {
     Button btn_exercise;
     APIInterface apiInterface;
 
-    SharedPreferences sp;
+//    SharedPreferences sp;
     Boolean ptIdExist;
     Boolean ptRoomExist;
     Activity activity;
@@ -56,7 +53,10 @@ public class HomeFragment extends Fragment {
     ImageView iv_mainpic;
     TextView tv_comment;
     TextView tv_ptnum;
-    int studentId = myId;
+    int student_id;
+    int trainer_id;
+    int pt_id;
+    String ptRoom;
 
     MainActivity main;
 
@@ -79,6 +79,8 @@ public class HomeFragment extends Fragment {
         tv_ptnum = view.findViewById(R.id.tv_ptnum);
         tv_comment = view.findViewById(R.id.tv_comment);
         iv_mainpic = view.findViewById(R.id.iv_mainpic);
+        trainer_id=0;
+        student_id = myId;
 
         btn_exercise = view.findViewById(R.id.btn_exercise);
         btn_exercise.setOnClickListener(new View.OnClickListener() {
@@ -91,9 +93,10 @@ public class HomeFragment extends Fragment {
         btn_schedule = view.findViewById(R.id.btn_schedule);
         btn_schedule.setOnClickListener(new View.OnClickListener(){
             //일정 관리로 넘어감
+
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).goSchedule();
+                ((MainActivity)getActivity()).goSchedule(trainer_id,pt_id);
             }
         });
         btn_startpt = view.findViewById(R.id.btn_start);
@@ -101,16 +104,16 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                String ptRoom = sp.getString("pt_room","");
+//                String ptRoom = sp.getString("pt_room","");
                 ((MainActivity)getActivity()).goPT(ptRoom);
             }
         });
 
 
         Context context = getActivity();
-        sp = context.getSharedPreferences("coffit",Context.MODE_PRIVATE);
-        tv_summary.setText(sp.getString("summary",""));
-        tv_username.setText(sp.getString("trainer_name",""));
+//        sp = context.getSharedPreferences("coffit",Context.MODE_PRIVATE);
+//        tv_summary.setText(sp.getString("summary",""));
+//        tv_username.setText(sp.getString("trainer_name",""));
 
 
 
@@ -119,7 +122,7 @@ public class HomeFragment extends Fragment {
         //임시 아이디 1번으로 테스트
 
 
-//        studentId = sp.getInt("student_id",0);
+//        student_id = sp.getInt("student_id",0);
 //        ptIdExist = !(sp.getInt("pt_id",0)==0);
 //        ptRoomExist = !(sp.getString("pt_room","").equals(""));
 //        Log.d("TAG", "ptIdExist : " + ptIdExist + "ptRoomExist : "+ptRoomExist);
@@ -141,7 +144,7 @@ public class HomeFragment extends Fragment {
     public void retrofit_home(){
         apiInterface = APIClient.getClient().create(APIInterface.class);
 
-        Call<HomeResponse> call = apiInterface.getPT(studentId);
+        Call<HomeResponse> call = apiInterface.getPT(student_id);
         call.enqueue(new Callback<HomeResponse>(){
             @Override
             public void onResponse(Call<HomeResponse> call, Response<HomeResponse> response){
@@ -150,11 +153,12 @@ public class HomeFragment extends Fragment {
                 PT pt = hr.getPt();
                 if(pt!=null){
 
+
                     PTComment comment = hr.getPtComment();
-                    List<Schedule> schedules = hr.getSchedules();
                     String info = (pt.getTotalNum()- pt.getRestNum())+ "회 완료 " +"(전체 "+ pt.getTotalNum()+"회 중)";
                     tv_ptnum.setText(info);
-
+                    ptRoom = pt.getPtRoom();
+                    pt_id = pt.getId();
 
 //                    if(!ptRoomExist){
 //                        SharedPreferences.Editor editor = sp.edit();
@@ -199,6 +203,7 @@ public class HomeFragment extends Fragment {
                 //트레이너 가지고 화면 세팅
                 Trainer trainer = response.body();
                 if(trainer != null) {
+                    trainer_id = trainer.getId();
                     tv_summary.setText(trainer.getSummary());
                     tv_username.setText(trainer.getUsername());
                     Picasso.get().load(trainer.getPictureURL()).into(iv_mainpic);

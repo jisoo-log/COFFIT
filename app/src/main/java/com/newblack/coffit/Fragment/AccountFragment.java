@@ -9,10 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.newblack.coffit.APIClient;
 import com.newblack.coffit.APIInterface;
@@ -60,7 +57,7 @@ public class AccountFragment extends Fragment {
 
 
         iv_profile = view.findViewById(R.id.iv_profile);
-        tv_name = view.findViewById(R.id.tv_name);
+        tv_name = view.findViewById(R.id.tv_title);
         tv_email = view.findViewById(R.id.tv_email);
         tv_age = view.findViewById(R.id.tv_age);
         tv_phone = view.findViewById(R.id.tv_phone);
@@ -74,10 +71,14 @@ public class AccountFragment extends Fragment {
         });
 
         id = myId;
-        retrofit_profile(id);
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        retrofit_profile(id);
+    }
 
     public void retrofit_profile(int id){
         apiInterface = APIClient.getClient().create(APIInterface.class);

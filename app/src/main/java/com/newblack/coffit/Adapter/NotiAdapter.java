@@ -23,11 +23,7 @@ import java.util.Locale;
 public class NotiAdapter extends RecyclerView.Adapter<NotiAdapter.NotiHolder> {
     Context mContext;
     private List<Noti> notis = new ArrayList<>();
-    SharedPreferences sp;
 
-    public NotiAdapter(Context context){
-        mContext = context;
-    }
 
     //아이템 클릭을 처리하기 위한 인터페이스 정의
     public interface OnItemClickListener {
@@ -54,10 +50,10 @@ public class NotiAdapter extends RecyclerView.Adapter<NotiAdapter.NotiHolder> {
     public void onBindViewHolder(@NonNull NotiAdapter.NotiHolder holder, int position) {
         Log.d("TAG", "timeAdapter onBindViewHolder : " + position);
         Noti curNoti = notis.get(position);
-        //날짜 문제 해결 필요 -> 전부 스트링으로 받는 쪽으로!
-//        SimpleDateFormat dayFormat = new SimpleDateFormat("MM월 dd일 hh:mm", Locale.getDefault());
-//        String time = dayFormat.format(curNoti.getTime());
-//        holder.tv_time.setText(time);
+        SimpleDateFormat dayFormat = new SimpleDateFormat("MM월 dd일 hh:mm", Locale.getDefault());
+        String time = dayFormat.format(curNoti.getTime());
+        holder.tv_time.setText(time);
+        holder.tv_username.setText("COFFIT");
         holder.tv_noti.setText(curNoti.getContent());
     }
 
@@ -85,9 +81,6 @@ public class NotiAdapter extends RecyclerView.Adapter<NotiAdapter.NotiHolder> {
             tv_username = itemView.findViewById(R.id.tv_username);
             tv_time = itemView.findViewById(R.id.tv_time);
             tv_noti = itemView.findViewById(R.id.tv_noti);
-
-            sp = mContext.getSharedPreferences("coffit",Context.MODE_PRIVATE);
-            tv_username.setText(sp.getString("trainer_name",""));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 //노티 클릭 어떻게 할건지 구현해야함

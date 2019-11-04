@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.newblack.coffit.APIClient;
 import com.newblack.coffit.APIInterface;
@@ -54,15 +55,14 @@ public class ScheduleActivity extends AppCompatActivity {
     String selectedDay;
     CalendarDay selected;
     int studentId = myId;
+    int trainer_id;
+    int pt_id;
 
     RecyclerView recyclerView;
     ScheduleAdapter adapter;
     Activity activity;
     APIInterface apiInterface;
-    SharedPreferences sp;
-
-
-
+//    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,17 +75,44 @@ public class ScheduleActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv_schedule);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        sp = getSharedPreferences("coffit",MODE_PRIVATE);
+
+
+
+//        sp = getSharedPreferences("coffit",MODE_PRIVATE);
 //        studentId = sp.getInt("student_id",0);
 
 
         calendar = findViewById(R.id.calendar);
-        calendar.setSelectedDate(CalendarDay.today());
-        selected = CalendarDay.today();
-        today_object = dateObject(CalendarDay.today());
-        selectedDay = today_object;
-        today = dateFormat(CalendarDay.today());
-        tv_today.setText(today);
+
+        Intent intent = getIntent();
+        String type = intent.getStringExtra("type");
+        trainer_id = intent.getIntExtra("trainer_id",-1);
+        pt_id = intent.getIntExtra("pt_id",-1);
+        if(trainer_id==-1 || pt_id==-1){
+            Toast.makeText(this,"잘못된 접근입니다",Toast.LENGTH_LONG).show();
+            finish();
+        }
+        if(type==null) {
+            calendar.setSelectedDate(CalendarDay.today());
+            selected = CalendarDay.today();
+            today_object = dateObject(CalendarDay.today());
+            selectedDay = today_object;
+            today = dateFormat(CalendarDay.today());
+            tv_today.setText(today);
+        }
+
+        else {
+            String s = intent.getStringExtra("date");
+            int year = Integer.parseInt(s.split("-")[0]);
+            int month = Integer.parseInt(s.split("-")[1]);
+            int day = Integer.parseInt(s.split("-")[2]);
+            CalendarDay c = CalendarDay.from(year,month,day);
+            calendar.setSelectedDate(c);
+            selected = c;
+            today_object = dateObject(c);
+            today = dateFormat(c);
+            tv_today.setText(today);
+        }
 
         calendar.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
@@ -117,6 +144,8 @@ public class ScheduleActivity extends AppCompatActivity {
                 Schedule schedule = todayList.get(position);
                 Intent intent = new Intent(activity,ScheduleDialogActivity.class);
                 intent.putExtra("schedule",schedule);
+                intent.putExtra("trainer_id",trainer_id);
+                intent.putExtra("pt_id",pt_id);
                 startActivity(intent);
             }
         });
@@ -172,6 +201,8 @@ public class ScheduleActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddScheduleActivity.class);
         intent.putExtra("date",selectedDay);
         Log.d("TAG","selectedDay : " + selectedDay);
+        intent.putExtra("trainer_id",trainer_id);
+        intent.putExtra("pt_id",pt_id);
         startActivity(intent);
     }
 

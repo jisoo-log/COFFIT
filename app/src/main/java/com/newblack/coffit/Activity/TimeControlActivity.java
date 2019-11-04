@@ -117,21 +117,21 @@ public class TimeControlActivity extends AppCompatActivity {
 
                 for(Schedule test : scheduleList){
                     Log.d("TAG" , " 텍스트 타임 : id " + test.getId()+ " time " +test.getDate());
-
-                    int test_y = test.createdAt.getYear();
-                    int test_M = test.createdAt.getMonth();
-                    int test_d = test.createdAt.getDate();
-                    int test_h = test.createdAt.getHours();
-                    int test_m = test.createdAt.getMinutes();
-                    Log.d("TAG" ," Date 시간 테스트 : " + test.createdAt +" 숫자값 : " +test_y + test_M+test_d+test_h+test_m);
-                    Calendar cale = Calendar.getInstance();
-                    Log.d("TAG","실제 Date 내의 값 : " + DateUtils.fromServerTime(test.createdAt));
-                    cale.setTime(test.createdAt);
-                    Log.d("TAG","Calendar 시간 테스트 : "+cale.get(Calendar.YEAR)
-                        +cale.get(Calendar.MONTH)
-                        +cale.get(Calendar.DATE)
-                        +cale.get(Calendar.HOUR_OF_DAY)
-                        +cale.get(Calendar.MINUTE));
+//
+//                    int test_y = test.createdAt.getYear();
+//                    int test_M = test.createdAt.getMonth();
+//                    int test_d = test.createdAt.getDate();
+//                    int test_h = test.createdAt.getHours();
+//                    int test_m = test.createdAt.getMinutes();
+//                    Log.d("TAG" ," Date 시간 테스트 : " + test.createdAt +" 숫자값 : " +test_y + test_M+test_d+test_h+test_m);
+//                    Calendar cale = Calendar.getInstance();
+//                    Log.d("TAG","실제 Date 내의 값 : " + DateUtils.fromServerTime(test.createdAt));
+//                    cale.setTime(test.createdAt);
+//                    Log.d("TAG","Calendar 시간 테스트 : "+cale.get(Calendar.YEAR)
+//                        +cale.get(Calendar.MONTH)
+//                        +cale.get(Calendar.DATE)
+//                        +cale.get(Calendar.HOUR_OF_DAY)
+//                        +cale.get(Calendar.MINUTE));
 
                     Calendar cale2 = Calendar.getInstance();
                 }

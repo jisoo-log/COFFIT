@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.newblack.coffit.APIClient;
 import com.newblack.coffit.APIInterface;
 import com.newblack.coffit.Data.Schedule;
@@ -34,19 +36,21 @@ public class ScheduleDialogActivity extends Activity {
     Schedule schedule;
     APIInterface apiInterface;
     Activity activity;
-    SharedPreferences sp;
+//    SharedPreferences sp;
     //요청들 넣기
 
-    CardView cv_btn;
+    LinearLayout cv_btn;
     TextView tv_left;
     TextView tv_right;
-    TextView tv_summary;
     TextView tv_username;
     TextView tv_starttime;
     TextView tv_endtime;
     TextView tv_noti;
     TextView tv_content;
 
+    int student_id;
+    int trainer_id;
+    int pt_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +58,19 @@ public class ScheduleDialogActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_schedule_dialog);
         activity= this;
-        sp = getSharedPreferences("coffit",MODE_PRIVATE);
+//        sp = getSharedPreferences("coffit",MODE_PRIVATE);
 
         //TODO : Need to consider dialog come from noti later
         Intent intent = getIntent();
         schedule = (Schedule) intent.getSerializableExtra("schedule");
-        cv_btn = findViewById(R.id.cv_btn);
+        student_id = schedule.getStudentId();
+        trainer_id = schedule.getTrainerId();
+
+//        trainer_id = intent.getIntExtra("trainer_id",-1);
+        pt_id = intent.getIntExtra("pt_id",-1);
+        cv_btn = findViewById(R.id.ll_button);
         tv_left = findViewById(R.id.tv_left);
         tv_right = findViewById(R.id.tv_right);
-        tv_summary = findViewById(R.id.tv_summary);
         tv_username = findViewById(R.id.tv_username);
         tv_starttime = findViewById(R.id.tv_starttime);
         tv_endtime = findViewById(R.id.tv_endtime);
@@ -71,9 +79,8 @@ public class ScheduleDialogActivity extends Activity {
 
         Log.d("TAG","id :" + schedule.getId() + "state : " + schedule.getState());
 
-        tv_summary.setText(sp.getString("summary",""));
-        String user = sp.getString("trainer_name","")+ " 트레이너";
-        tv_username.setText(user);
+//        String user = sp.getString("trainer_name","")+ " 트레이너";
+        tv_username.setText("아래 시간에 PT를 진행합니다");
         tv_starttime.setText(schedule.getStartEndTime(0));
         tv_endtime.setText(schedule.getStartEndTime(1));
         tv_noti.setVisibility(View.INVISIBLE);
@@ -88,7 +95,7 @@ public class ScheduleDialogActivity extends Activity {
                         @Override
                         public void onClick(View view) {
                             schedule.setState(3);
-                            retrofit_edit();
+                            retrofit_edit(schedule, 3);
                         }
                     });
 
@@ -97,7 +104,7 @@ public class ScheduleDialogActivity extends Activity {
                         @Override
                         public void onClick(View view) {
                             schedule.setState(1);
-                            retrofit_edit();
+                            retrofit_edit(schedule,1);
                         }
                     });
 
@@ -115,6 +122,12 @@ public class ScheduleDialogActivity extends Activity {
                 break;
             case 1:
                 tv_left.setText("일정 삭제");
+                tv_left.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view) {
+                        retrofit_delete();
+                    }
+                });
                 tv_right.setText("일정 변경");
                 tv_right.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -125,7 +138,10 @@ public class ScheduleDialogActivity extends Activity {
                         String date = dateObject(schedule.getDate());
                         intent1.putExtra("date",date);
                         intent1.putExtra("pastId",schedule.getId());
+                        intent1.putExtra("trainer_id",trainer_id);
+                        intent1.putExtra("pt_id",pt_id);
                         startActivity(intent1);
+                        finish();
                     }
                 });
                 break;
@@ -141,13 +157,19 @@ public class ScheduleDialogActivity extends Activity {
 
 
 
-    public void retrofit_edit(){
+    public void retrofit_edit(Schedule schedule, int state){
         apiInterface = APIClient.getClient().create(APIInterface.class);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("state",state);
+        jsonObject.addProperty("student_id",student_id);
+        jsonObject.addProperty("trainer_id",trainer_id);
+        jsonObject.addProperty("past_schedule_id",schedule.getPastId());
+        jsonObject.addProperty("trainer_schedule_id",schedule.getTs_id());
 
-        Call<Schedule> call = apiInterface.putSchedule(schedule, schedule.getId(), "student");
-        call.enqueue(new Callback<Schedule>(){
+        Call<JsonObject> call = apiInterface.putSchedule(jsonObject, schedule.getId());
+        call.enqueue(new Callback<JsonObject>(){
             @Override
-            public void onResponse(Call<Schedule> call, Response<Schedule> response){
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response){
                 if(response.isSuccessful()){
                     Log.d("TAG","retrofit edit 수행을 완료했습니다.");
                 }
@@ -157,7 +179,7 @@ public class ScheduleDialogActivity extends Activity {
                 finish();
             }
             @Override
-            public void onFailure(Call<Schedule> call, Throwable t) {
+            public void onFailure(Call<JsonObject> call, Throwable t) {
                 Log.d("TAG", "통신 실패");
             }
         });

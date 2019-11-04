@@ -43,6 +43,10 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
 
         String title = remoteMessage.getData().get("title");
         String message = remoteMessage.getData().get("message");
+        String date = remoteMessage.getData().get("date");
+        String caseNumber = remoteMessage.getData().get("caseNumber");
+
+        Log.d("TAG", "check data date : "+ date + " caseNumber " + caseNumber);
 
         /**
          * we need Notification Channel to make push

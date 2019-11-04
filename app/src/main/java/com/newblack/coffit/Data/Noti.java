@@ -7,7 +7,7 @@ import java.util.Date;
 public class Noti {
 
     @SerializedName("to_whom")
-    private String toWhom;
+    private int toWhom;
     @SerializedName("contents")
     private String content;
     @SerializedName("request_date")
@@ -15,8 +15,6 @@ public class Noti {
     @SerializedName("type")
     private String type; //어떤 종류의 노티인지 저장할 필요 존재
     private boolean read;
-
-    private String makerId;
 
 
     public String getContent() {

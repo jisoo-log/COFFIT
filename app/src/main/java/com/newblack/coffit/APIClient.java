@@ -1,6 +1,8 @@
 package com.newblack.coffit;
 
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -13,7 +15,9 @@ public class APIClient {
     public static Retrofit getClient(){
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .readTimeout(10, TimeUnit.SECONDS)
+                .addInterceptor(interceptor).build();
 
 
         retrofit = new Retrofit.Builder()

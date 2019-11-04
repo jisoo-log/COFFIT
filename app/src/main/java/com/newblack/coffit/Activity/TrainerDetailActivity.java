@@ -3,27 +3,36 @@ package com.newblack.coffit.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.newblack.coffit.APIClient;
 import com.newblack.coffit.APIInterface;
+import com.newblack.coffit.Data.ChatRoom;
 import com.newblack.coffit.R;
 import com.newblack.coffit.Data.Trainer;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.newblack.coffit.Activity.MainActivity.PTing;
+import static com.newblack.coffit.Activity.MainActivity.myId;
 
 public class TrainerDetailActivity extends AppCompatActivity {
     int trainerId;
@@ -39,10 +48,16 @@ public class TrainerDetailActivity extends AppCompatActivity {
     Button btn_apply;
     Toolbar toolbar;
     LinearLayout lo_subpic;
+    RatingBar rating;
+    TextView tv_rate;
 
     //선택받은 트레이너 서버에서 정보 받아옴
     APIInterface apiInterface;
     Trainer trainer;
+    int room_id;
+    Activity activity;
+    int student_id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +67,8 @@ public class TrainerDetailActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        activity = this;
+        student_id=myId;
 
         tv_summary = findViewById(R.id.tv_summary);
         tv_username = findViewById(R.id.tv_username);
@@ -64,6 +81,12 @@ public class TrainerDetailActivity extends AppCompatActivity {
         tv_price = findViewById(R.id.tv_price);
         lo_subpic = findViewById(R.id.lo_subpic);
         btn_apply = findViewById(R.id.btn_apply);
+        rating = findViewById(R.id.rating);
+        tv_rate  = findViewById(R.id.tv_rate);
+
+        if(PTing){
+            btn_apply.setBackgroundColor(Color.parseColor("#c9e9ff"));
+        }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -86,12 +109,28 @@ public class TrainerDetailActivity extends AppCompatActivity {
         return true;
     }
 
-    public void clickApply(View view){
-        Intent intent = new Intent(this, PayActivity.class);
-        //위의 정보 그대 가져가도 되는건가? 그러면 클래스를 아예 넘겨주는 편이 낫지 않을까 싶네
-        Log.d("TAG","TrainerDetailActivity : clickApply 진입");
-        intent.putExtra("Trainer",trainer);
+    public void clickApply(View view) {
+        if (!PTing) {
+            Intent intent = new Intent(this, PayActivity.class);
+            Log.d("TAG", "TrainerDetailActivity : clickApply");
+            intent.putExtra("Trainer", trainer);
+            startActivity(intent);
+        }
+        else {
+            Toast.makeText(this, "이미 수강중인 PT가 있습니다", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void goReview(View view){
+        Intent intent = new Intent(this, ReviewActivity.class);
+        Log.d("TAG","TrainerDetailActivity : goReview");
+        intent.putExtra("trainer_id",trainerId);
+        intent.putExtra("trainer_name",trainer.getUsername());
         startActivity(intent);
+    }
+
+    public void clickAsk(View view){
+        retrofit_getRoom(student_id);
     }
 
 
@@ -115,6 +154,10 @@ public class TrainerDetailActivity extends AppCompatActivity {
                     Log.d("TAG","retrofit trainer price is "+trainer.getPrice());
                     String price = trainer.getPrice()+"원";
                     tv_price.setText(price);
+
+                    tv_rate.setText(String.valueOf(Math.round(trainer.getRate()*10)/10.0));
+                    rating.setRating(trainer.getRate());
+
                     Picasso.get().load(trainer.getPictureURL()).into(iv_mainPic);
                     List<Trainer.ExtraPic> pics = trainer.getExtraPics();
 
@@ -147,6 +190,51 @@ public class TrainerDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Trainer> call, Throwable t) {
+                Log.d("TAG", "통신 실패");
+            }
+        });
+    }
+
+
+    public void retrofit_getRoom(int student_id){
+        //TODO : 속한 채팅방을 전부 불러옴
+        Log.d("TAG", "retrofit_GetRoom");
+        List<ChatRoom> roomList = new ArrayList<>();
+
+        apiInterface = APIClient.getClient().create(APIInterface.class);
+
+        Call<List<ChatRoom>> call = apiInterface.getRoomList(student_id);
+        call.enqueue(new Callback<List<ChatRoom>>(){
+            @Override
+            public void onResponse(Call<List<ChatRoom>> call, Response<List<ChatRoom>> response){
+                Log.d("TAG", "apiInterface callback onResponse");
+                List<ChatRoom> rooms = response.body();
+
+                room_id=-1;
+                if(rooms!=null) {
+                    roomList.addAll(rooms);
+                    for(ChatRoom room : roomList){
+                        if(room.getStudent_id()==student_id){
+                            room_id = room.getId();
+                            break;
+                        }
+                    }
+                }
+
+                Intent intent = new Intent(activity, ChatActivity.class);
+                Log.d("TAG","TrainerDetailActivity : clickAsk");
+                intent.putExtra("from","detail");
+                intent.putExtra("trainer_id",trainerId);
+                intent.putExtra("trainer_name",trainer.getUsername());
+                intent.putExtra("trainer_pic",trainer.getPictureURL());
+                if(room_id!=-1) intent.putExtra("room_id",room_id);
+
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<List<ChatRoom>> call, Throwable t) {
+                t.printStackTrace();
                 Log.d("TAG", "통신 실패");
             }
         });

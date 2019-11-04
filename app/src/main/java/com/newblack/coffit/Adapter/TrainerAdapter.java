@@ -51,8 +51,9 @@ public class TrainerAdapter extends RecyclerView.Adapter<TrainerAdapter.TrainerH
         Trainer curTrainer = trainers.get(position);
         holder.tv_summary.setText(curTrainer.getSummary());
         holder.tv_username.setText(curTrainer.getUsername());
-//        holder.rating.setRating(curTrainer.getStar());
-        //holder.tv_numreview.setText(curTrainer.getNumReview());
+        String rate = Math.round(curTrainer.getRate()*10)/10.0 + " (" + curTrainer.getNumReview()+ ")";
+        holder.rating.setRating(curTrainer.getRate());
+        holder.tv_numreview.setText(rate);
         Picasso.get().load(curTrainer.getPictureURL()).into(holder.iv_mainpic);
 
     }

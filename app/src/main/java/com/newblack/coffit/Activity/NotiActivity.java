@@ -2,6 +2,7 @@ package com.newblack.coffit.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,15 +18,19 @@ import com.newblack.coffit.APIInterface;
 import com.newblack.coffit.Adapter.NotiAdapter;
 import com.newblack.coffit.Data.Noti;
 import com.newblack.coffit.Data.Schedule;
+import com.newblack.coffit.DateUtils;
 import com.newblack.coffit.R;
 import com.newblack.coffit.Response.NotiResponse;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.newblack.coffit.Activity.MainActivity.myId;
 
 public class NotiActivity extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -35,7 +40,6 @@ public class NotiActivity extends AppCompatActivity {
     List<Noti> notiList;
     List<NotiResponse> notis;
 
-    SharedPreferences sp;
     int id;
     Activity activity;
 
@@ -46,21 +50,27 @@ public class NotiActivity extends AppCompatActivity {
         setContentView(R.layout.activity_noti);
         activity = this;
 
-        sp = getSharedPreferences("coffit",MODE_PRIVATE);
-        id = sp.getInt("student_id",0);
+        id = myId;
         toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.rv_noti);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        notiAdapter = new NotiAdapter(this);
+        notiAdapter = new NotiAdapter();
         recyclerView.setAdapter(notiAdapter);
+        DividerItemDecoration deco = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(deco);
         notiList = new ArrayList<>();
 
         notiAdapter.setOnItemClickListener(new NotiAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 Schedule schedule = notis.get(position).getSchedule();
-                Intent intent = new Intent(activity, ScheduleDialogActivity.class);
-                intent.putExtra("schedule",schedule);
+                if(schedule==null) return;
+                Intent intent = new Intent(activity, ScheduleActivity.class);
+                Date date = schedule.getDate();
+                String time = DateUtils.dateObject(date);
+                intent.putExtra("type","noti");
+                intent.putExtra("date",time);
+//                intent.putExtra("schedule",schedule);
                 startActivity(intent);
                 finish();
             }
@@ -70,7 +80,6 @@ public class NotiActivity extends AppCompatActivity {
         //서버 통신
         retrofit_noti();
     }
-
 
     public void retrofit_noti(){
         apiInterface = APIClient.getClient().create(APIInterface.class);
@@ -82,10 +91,7 @@ public class NotiActivity extends AppCompatActivity {
                 Log.d("TAG", "apiInterface callback onResponse");
                 notis = response.body();
                 if(notis != null){
-                    for(NotiResponse noti : notis){
-                        //강제로 형변환을 일으켜도 괜찮을까??
-                        notiList.add(noti);
-                    }
+                    notiList.addAll(notis);
                     notiAdapter.setNotis(notiList);
                 }
             }
@@ -96,6 +102,7 @@ public class NotiActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
 

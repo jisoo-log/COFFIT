@@ -3,9 +3,12 @@ package com.newblack.coffit;
 import android.app.DownloadManager;
 
 import com.google.gson.JsonObject;
+import com.newblack.coffit.Data.ChatRoom;
+import com.newblack.coffit.Data.Message;
 import com.newblack.coffit.Data.Mission;
 import com.newblack.coffit.Data.Noti;
 import com.newblack.coffit.Data.PT;
+import com.newblack.coffit.Data.Review;
 import com.newblack.coffit.Data.Schedule;
 import com.newblack.coffit.Data.Student;
 import com.newblack.coffit.Data.Trainer;
@@ -64,7 +67,10 @@ public interface APIInterface {
     Call<Schedule> postSchedule(@FieldMap HashMap<String,Object> param);
 
     @PUT("schedules/{scheduleId}")
-    Call<Schedule> putSchedule(@Body Schedule schedule, @Path("scheduleId") int scheduleId, @Query("iAm") String iAm);
+    Call<JsonObject> putSchedule(@Body JsonObject schedule, @Path("scheduleId") int scheduleId);
+
+//    @PUT("schedules/{scheduleId}")
+//    Call<Schedule> putSchedule(@Body Schedule schedule, @Path("scheduleId") int scheduleId, @Query("iAm") String iAm);
 
     @DELETE("schedules/{scheduleId}")
     Call<ResponseBody> deleteSchedule(@Path("scheduleId") int scheduleId);
@@ -90,7 +96,26 @@ public interface APIInterface {
                                       @Part("email") RequestBody email,
                                       @Part("age") RequestBody age,
                                       @Part("phone_number") RequestBody phone,
+                                      @Part("gender") RequestBody gender,
                                       @Path("studentId") int studentId);
+    @Multipart
+    @PUT("students/{studentId}")
+    Call<ResponseBody> putStudent(@Part("username") RequestBody name,
+                                  @Part("email") RequestBody email,
+                                  @Part("age") RequestBody age,
+                                  @Part("phone_number") RequestBody phone,
+                                  @Part("gender") RequestBody gender,
+                                  @Path("studentId") int studentId);
+
+    @Multipart
+    @POST("students")
+    Call<ResponseBody> postStudent(@Part MultipartBody.Part file,
+                                   @Part("username") RequestBody name,
+                                   @Part("email") RequestBody email,
+                                   @Part("age") RequestBody age,
+                                   @Part("phone_number") RequestBody phone,
+                                   @Part("gender") RequestBody gender);
+
 
     @GET("/missions/students/{studentId}")
     Call<List<Mission>> getMissionList(@Path("studentId") int studentId);
@@ -106,6 +131,14 @@ public interface APIInterface {
     @FormUrlEncoded
     @POST("/exerciseVideos")
     Call<VideoResponse> postExerciseVideo(@FieldMap HashMap<String,Object> param);
+
+//    @Multipart
+//    @POST("/exerciseVideos")
+//    Call<VideoResponse> postExerciseVideo(@Part("mission_id") RequestBody mission_id,
+//                                          @Part("videoFormat") RequestBody videoFormat,
+//                                          @Part("trainer_id") RequestBody trainer_id,
+//                                          @Part("student_id") RequestBody student_id,
+//                                          @Part MultipartBody.Part file);
 
 
     @Multipart
@@ -125,10 +158,23 @@ public interface APIInterface {
 
     //TODO : 여기 마저 채우기
     //이전 비디오 아이디, 미션 아이디 -> 비디오 새로 업데이트 한 경우에 과거 비디오를 삭제하고 현재 미션에 영상을 넣을 수 있도록
-    @PUT("/exerciseVideos/{excerciseVideoId}")
-    Call<ResponseBody> putVideo(@Path("exerciseVideoId") int videoId, @Query("missionId") int mission_id);
+//    @PUT("/exerciseVideos/{excerciseVideoId}")
+//    Call<ResponseBody> putVideo(@Path("exerciseVideoId") int videoId, @Query("missionId") int mission_id);
 
     @POST("/students/{studentId}/token")
-    Call<Student> postToken(@Body JsonObject param,  @Path("studentId") int student_id);
+    Call<ResponseBody> postToken(@Body JsonObject param,  @Path("studentId") int student_id);
 
+
+    @GET("/reviews/{trainerId}")
+    Call<List<Review>> getReviewList(@Path("trainerId") int trainerId);
+
+    @FormUrlEncoded
+    @POST("/reviews")
+    Call<Void> postReview(@FieldMap HashMap<String,Object> param);
+
+    @GET("chattingRooms/trainers/{studentId}")
+    Call<List<ChatRoom>> getRoomList(@Path("studentId") int studentId);
+
+    @GET("chattingMessages/{chattingRoomId}")
+    Call<List<Message>> getMessage(@Path("chattingRoomId") int roomId);
 }

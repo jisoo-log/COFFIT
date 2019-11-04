@@ -81,7 +81,7 @@ public class MissionDetailActivity extends AppCompatActivity {
     final int GALLERY_CODE = 3333;
     final int BACK_PRESSED = 99;
     final int FILE_UPLOAD = 88;
-//    ImageView iv_mission;
+    //    ImageView iv_mission;
     Activity activity;
 //    Toolbar toolbar;
 
@@ -109,7 +109,7 @@ public class MissionDetailActivity extends AppCompatActivity {
     private SimpleExoPlayer player;
 
     String selected;
-//    Mission mission;
+    //    Mission mission;
     ExerciseVideo video;
     Bitmap bitmap;
 
@@ -203,7 +203,7 @@ public class MissionDetailActivity extends AppCompatActivity {
 
             String result = intent.getStringExtra("result");
             //TODO: change event when upload end
-            tv_feedback.setText("완료");
+            tv_no_video.setText(result);
         }
     };
 
@@ -327,10 +327,10 @@ public class MissionDetailActivity extends AppCompatActivity {
                     retrofit_postvideo(video);
 
                     //finish app
-                    Intent intent = new Intent();
-                    intent.putExtra("blocked_id",mission_id);
-                    setResult(FILE_UPLOAD,intent);
-                    finish();
+//                    Intent intent = new Intent();
+//                    intent.putExtra("blocked_id",mission_id);
+//                    setResult(FILE_UPLOAD,intent);
+//                    finish();
                     break;
             }
         }
@@ -403,7 +403,7 @@ public class MissionDetailActivity extends AppCompatActivity {
                     checkFeedback(mission);
                     getMissionText(mission.getContent());
 
-                    if(video != null){
+                    if(video != null & mission.isHas_video()){
                         exoPlayerView.setVisibility(View.VISIBLE);
                         tv_no_video.setVisibility(View.GONE);
                         btn_delete.setVisibility(View.VISIBLE);
@@ -413,6 +413,7 @@ public class MissionDetailActivity extends AppCompatActivity {
                         bitmap = null;
                         MediaMetadataRetriever retriever = null;
                         try {
+//                            //TODO : find way to get image thumbnail
                             retriever = new MediaMetadataRetriever();
                             retriever.setDataSource(mission.getVideoUrl(), new HashMap<String, String>());
                             bitmap = retriever.getFrameAtTime(20000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
@@ -454,7 +455,6 @@ public class MissionDetailActivity extends AppCompatActivity {
     }
 
     public void retrofit_postvideo(HashMap<String, Object> video){
-        //TODO : post 준비과정. 여기서 영상format을 보내줘야함
         apiInterface = APIClient.getClient().create(APIInterface.class);
         Call<VideoResponse> call = apiInterface.postExerciseVideo(video);
         call.enqueue(new Callback<VideoResponse>() {
@@ -500,9 +500,12 @@ public class MissionDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.d("TAG","retrofit delete 수행을 완료했습니다.");
-
+                Toast.makeText(activity,"영상이 삭제되었습니다",Toast.LENGTH_SHORT).show();
                 //refresh after delete video
-                retrofit_getMission(missionId);
+//                retrofit_getMission(missionId);
+
+                //choose finish after delete video
+                finish();
             }
 
             @Override

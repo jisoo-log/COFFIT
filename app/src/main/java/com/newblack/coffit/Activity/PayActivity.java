@@ -101,6 +101,7 @@ public class PayActivity extends AppCompatActivity {
             String price = trainer.getPrice() + "원";
             tv_price.setText(price);
             Picasso.get().load(trainer.getPictureURL()).into(iv_mainPic);
+            rating.setRating(trainer.getRate());
         }
 
 
@@ -112,7 +113,7 @@ public class PayActivity extends AppCompatActivity {
                 if (((CheckBox) view).isChecked()) {
                     Log.d("TAG","checkBox Checked!");
                     payBtn.setEnabled(true);
-                    payBtn.setBackgroundColor(Color.parseColor("#00bfff"));
+                    payBtn.setBackgroundColor(Color.parseColor("#424242"));
                 } else {
                     Log.d("TAG","checkBox UnChecked!");
                     payBtn.setEnabled(false);

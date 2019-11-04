@@ -2,6 +2,7 @@ package com.newblack.coffit.Adapter;
 
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,6 @@ import java.util.List;
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.TagHolder> {
     private List<String> times = new ArrayList<>();
     private Bitmap thumbnail;
-
 
     //아이템 클릭을 처리하기 위한 인터페이스 정의
     public interface OnItemClickListener {
@@ -51,7 +51,6 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.TagHolder> {
         holder.tv_tag.setText(curTime);
         try {
             holder.iv_tag.setImageBitmap(thumbnail);
-//            Picasso.get().load(thumbnail).into(holder.iv_tag);
         } catch(Exception e){
             e.printStackTrace();
             Log.d("TAG", "no thumbnail");
