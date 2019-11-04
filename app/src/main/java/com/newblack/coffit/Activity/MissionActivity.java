@@ -60,9 +60,8 @@ public class MissionActivity extends AppCompatActivity {
     List<Mission> missionList;
     int total_num;
     int total_rate;
-    int pt_id;
     int trainer_id;
-    int blocked_id=0;
+//    int blocked_id=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +74,6 @@ public class MissionActivity extends AppCompatActivity {
         //get student id and name from DashBoard activity
         Intent intent = getIntent();
         student_id = myId;
-//        pt_id = intent.getIntExtra("pt_id",-1);
-//        if(student_id==-1 || pt_id ==-1){
-//            Toast.makeText(this, "잘못된 접근입니다", Toast.LENGTH_LONG).show();
-//            finish();
-//        }
 
         //initialize
         goodDayList = new ArrayList<>();
@@ -116,18 +110,19 @@ public class MissionActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                Log.d("TAG","현재 blocked_id : "+blocked_id + " 현재 선택된 미션 : "+mission_id );
+//                Log.d("TAG","현재 blocked_id : "+blocked_id + " 현재 선택된 미션 : "+mission_id );
                 if(mission_id==0){
                     Toast.makeText(activity,"미션이 설정되지 않았습니다",Toast.LENGTH_LONG).show();
                 }
-                else if(mission_id == blocked_id){
-                    Toast.makeText(activity,"영상 업로드 중입니다",Toast.LENGTH_LONG).show();
-                }
+//                else if(mission_id == blocked_id){
+//                    Toast.makeText(activity,"영상 업로드 중입니다",Toast.LENGTH_LONG).show();
+//                }
                 else{
                     intent.putExtra("mission_id",mission_id);
                     intent.putExtra("date",selected);
                     intent.putExtra("trainer_id",trainer_id);
-                    startActivityForResult(intent,9999);
+                    startActivity(intent);
+//                    startActivityForResult(intent,9999);
                 }
             }
         });
@@ -143,31 +138,31 @@ public class MissionActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        IntentFilter intentFilter = new IntentFilter("my.own.broadcast");
-        LocalBroadcastManager.getInstance(this).registerReceiver(myLocalBroadcastReceiver, intentFilter);
+//        IntentFilter intentFilter = new IntentFilter("my.own.broadcast");
+//        LocalBroadcastManager.getInstance(this).registerReceiver(myLocalBroadcastReceiver, intentFilter);
     }
 
-    private BroadcastReceiver myLocalBroadcastReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d("TAG","message came");
-            String result = intent.getStringExtra("result");
-            //TODO: change event when upload end
-            blocked_id = 0;
-        }
-    };
+//    private BroadcastReceiver myLocalBroadcastReceiver = new BroadcastReceiver() {
+//
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            Log.d("TAG","message came");
+//            String result = intent.getStringExtra("result");
+//            //TODO: change event when upload end
+//            blocked_id = 0;
+//        }
+//    };
 
     //check the app finished because of upload file | backpressed
     //if upload file, block to enter that day
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==FILE_UPLOAD){
-            blocked_id = data.getIntExtra("blocked_id",-1);
-            Log.d("TAG","check blocked id : "+blocked_id);
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if(resultCode==FILE_UPLOAD){
+//            blocked_id = data.getIntExtra("blocked_id",-1);
+//            Log.d("TAG","check blocked id : "+blocked_id);
+//        }
+//    }
 
     public void retrofit_getMissionList(int student_id){
         apiInterface = APIClient.getClient().create(APIInterface.class);
@@ -179,7 +174,9 @@ public class MissionActivity extends AppCompatActivity {
                 Log.d("TAG", "apiInterface callback onResponse");
                 List<Mission> missions = response.body();
                 if(missions == null || missions.size()==0){
-                    Toast.makeText(activity, "빈 응답",Toast.LENGTH_LONG).show();
+                    Log.d("TAG","아직 미션이 없습니다");
+//                    Toast.makeText(activity, "빈 응답",Toast.LENGTH_LONG).show();
+                    set_score(0,0);
                 }
                 else{
                     missionList = new ArrayList<>();
@@ -226,7 +223,8 @@ public class MissionActivity extends AppCompatActivity {
             score = 0;
         }
         else {
-            score = t_score/t_num;}
+            score = t_score/t_num;
+        }
         String string_score = String.format("%.1f",score);
         String s = "총 운동 회수 : " + t_num + " 회  |  평균 점수 : " + string_score;
         tv_score.setText(s);

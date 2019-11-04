@@ -6,8 +6,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,7 +18,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.gson.JsonObject;
+import com.newblack.coffit.APIClient;
+import com.newblack.coffit.APIInterface;
+import com.newblack.coffit.Data.ChatRoom;
 import com.newblack.coffit.Data.Student;
 import com.newblack.coffit.Fragment.AccountFragment;
 import com.newblack.coffit.Fragment.HomeFragment;
@@ -25,17 +35,26 @@ import com.newblack.coffit.R;
 import com.newblack.coffit.Fragment.TrainerFragment;
 import com.newblack.coffit.Fragment.TrainerListFragment;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNav;
+    Activity activity;
     Toolbar toolbar;
     FragmentManager fm;
     FragmentTransaction ft;
-    SharedPreferences sp;
+//    SharedPreferences sp;
     public static boolean PTing;
     //TODO : need to get id when ppl login
-    public static int myId = 1;
-    public static boolean hasPT;
+    public static int myId;
+    public static String myName;
+    public static String myPic;
+
+    APIInterface apiInterface;
 
     private TrainerFragment trainerFragment;
     private HomeFragment homeFragment;
@@ -66,13 +85,43 @@ public class MainActivity extends AppCompatActivity {
         trainerListFragment = new TrainerListFragment();
         homeNewFragment = new HomeNewFragment();
 
+        Intent intent = getIntent();
+        int student_id = intent.getIntExtra("student_id",-1);
+        if(student_id==-1){
+            Toast.makeText(this,"잘못된 접근입니다",Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        else{
+            //id랑 이름 전체에다 박아버리기
+            myId = student_id;
+            retrofit_profile(myId);
+        }
+
+        activity = this;
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>(){
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("TAG", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        Log.d("TAG", "token : "+token);
+//                        Toast.makeText(activity,token,Toast.LENGTH_LONG).show();
+                        retrofit_token(token,myId);
+                    }
+                });
+
 
 
 
         //결제 여부에 따라 변경 필요!
         //일단 지금은 선생 이름이 있으면 결제한 것으로 판단.. -> 나중에 문제가 생길까?
-        sp = getSharedPreferences("coffit",MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
+//        sp = getSharedPreferences("coffit",MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sp.edit();
 //        editor.clear();
 ////        editor.putBoolean("hasPT",true);
 //        editor.commit();
@@ -154,10 +203,9 @@ public class MainActivity extends AppCompatActivity {
 
         switch (id){
             case R.id.menu_search:
-                Toast.makeText(this,"노티 버튼",Toast.LENGTH_SHORT).show();
-                //for time test -> end!
-//                Intent intent2 = new Intent(this,TimeControlActivity.class);
-//                startActivity(intent2);
+
+                Intent intent2 = new Intent(this, ChatRoomActivity.class);
+                startActivity(intent2);
                 break;
             case R.id.menu_alarm:
                 Intent intent = new Intent(this,NotiActivity.class);
@@ -208,8 +256,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goSchedule(){
+    public void goSchedule(int trainer_id, int pt_id){
+        if(trainer_id==0 || pt_id==0) return;
         Intent intent = new Intent(this, ScheduleActivity.class);
+        intent.putExtra("trainer_id",trainer_id);
+        intent.putExtra("pt_id",pt_id);
         startActivity(intent);
     }
 
@@ -231,5 +282,47 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ProfileEditActivitiy.class);
         intent.putExtra("student",student);
         startActivity(intent);
+    }
+
+    public void retrofit_token(String token, int student_id){
+        JsonObject object = new JsonObject();
+        object.addProperty("fcm_token",token);
+        apiInterface = APIClient.getClient().create(APIInterface.class);
+        apiInterface.postToken(object,student_id).enqueue(new Callback<ResponseBody>(){
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.d("TAG","post token success");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("TAG","post token failed");
+            }
+        });
+    }
+
+    public void retrofit_profile(int id){
+        apiInterface = APIClient.getClient().create(APIInterface.class);
+
+        Call<Student> call = apiInterface.getStudent(id);
+        call.enqueue(new Callback<Student>(){
+            @Override
+            public void onResponse(Call<Student> call, Response<Student> response){
+                Log.d("TAG", "apiInterface callback onResponse");
+                Student student = response.body();
+                if(student != null){
+                    myName = student.getUsername();
+                    myPic = student.getPicture();
+                }
+                else {
+                    Log.d("TAG","잘못된 접근입니다.");
+                }
+            }
+            @Override
+            public void onFailure(Call<Student> call, Throwable t) {
+                Log.d("TAG", "통신 실패");
+            }
+        });
+
     }
 }

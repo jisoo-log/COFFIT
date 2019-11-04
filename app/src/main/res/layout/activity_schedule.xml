@@ -44,7 +44,7 @@
                 android:id="@+id/divide"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/colorGrey"/>
+                android:background="@color/colorGrey2"/>
                 <!--app:layout_constraintTop_toBottomOf="@id/calendar"-->
                 <!--app:layout_constraintStart_toStartOf="parent"-->
                 <!--app:layout_constraintEnd_toEndOf="parent"-->
@@ -82,6 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorMain"
+        android:textSize="16sp"
         android:text="새로운 PT 일정 잡기"
         android:onClick="newPT"
         android:textColor="@color/colorWhite"

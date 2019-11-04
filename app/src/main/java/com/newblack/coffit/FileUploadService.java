@@ -105,20 +105,20 @@ public class FileUploadService extends JobIntentService {
 
         Log.d("TAG","error : "+throwable.getMessage());
         Log.d("TAG","error : "+throwable.toString());
-//        sendBroadcastMeaasge("Error in file upload " + throwable.getMessage());
+        sendBroadcastMeaasge("Error in file upload " + throwable.getMessage());
         Log.e(TAG, "onErrors: ", throwable);
     }
 
 
     private void onProgress(Double progress) {
         //TODO : use this if we need show progress
-//        sendBroadcastMeaasge("Uploading in progress... " + (int) (100 * progress));
+        sendBroadcastMeaasge("파일 업로드중... " + (int) (100 * progress));
         Log.i(TAG, "onProgress: " + progress);
     }
 
     //TODO: need to add listener to know file upload finished
     private void onSuccess() {
-        sendBroadcastMeaasge("File uploading successful ");
+        sendBroadcastMeaasge("업로드 완료\n화면을 다시 열어주세요");
 
         //put after upload success!
         retrofit_putMission(mission_id, video_id);

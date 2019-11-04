@@ -2,17 +2,22 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorMain">#00bfff</color>
+    <color name="colorMain">#424242</color>
+    <color name="colorPoint">#ff7043</color>
+    <color name="colorMain3">#00bfff</color>
     <color name="colorMain2">#FFEBEE</color>
     <color name="colorSub1">#FFCDD2</color>
     <color name="colorSub2">#215b77</color>
     <color name="colorDark">#dc7e23</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGrey">#c9e9ff</color>
+    <color name="colorGrey2">#6d6d6d</color>
     <color name="colorAvail">#7fdfff</color>
     <color name="colorDisavail">#c9e9ff</color>
     <color name="colorBlack">#000000</color>
     <color name="colorGood">#4E8A47</color>
     <color name="colorSoso">#FFD773</color>
     <color name="colorBad">#BF4935</color>
+    <color name="colorMyChat">#215b77</color>
+    <color name="colorOtherChat">#FFFFFF</color>
 </resources>

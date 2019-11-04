@@ -52,9 +52,9 @@ import static com.newblack.coffit.Activity.ScheduleActivity.dateFormat;
 
 public class AddScheduleActivity extends AppCompatActivity {
     Activity activity;
-    SharedPreferences sp;
-    int studentId = myId;
-    int trainerId;
+//    SharedPreferences sp;
+    int studentId;
+    int trainer_id;
     int pt_id;
     APIInterface apiInterface;
     Toolbar toolbar;
@@ -80,6 +80,7 @@ public class AddScheduleActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         tv_today = findViewById(R.id.tv_today);
         tv_info = findViewById(R.id.tv_info);
+        studentId = myId;
 
 
         mRecyclerView = findViewById(R.id.rv_time);
@@ -89,14 +90,20 @@ public class AddScheduleActivity extends AppCompatActivity {
         times = new ArrayList<>();
         trainerScheduleList = new ArrayList<>();
 
-        sp = getSharedPreferences("coffit", Context.MODE_PRIVATE);
+//        sp = getSharedPreferences("coffit", Context.MODE_PRIVATE);
 //        studentId = myId;
-        trainerId = sp.getInt("trainer_id", 0);
-        pt_id = sp.getInt("pt_id",0);
-        Log.d("TAG", "studentId : " +studentId + " trainerId" + trainerId + " pt_id :"+ pt_id );
+//        trainerId = sp.getInt("trainer_id", 0);
+//        pt_id = sp.getInt("pt_id",0);
+        Log.d("TAG", "studentId : " +studentId + " trainerId" + trainer_id + " pt_id :"+ pt_id );
 
         //새로운 PT 신청이거나, PT 일정 변경 요청이거나
         Intent intent = getIntent();
+        trainer_id = intent.getIntExtra("trainer_id",-1);
+        pt_id = intent.getIntExtra("pt_id",-1);
+        if(trainer_id==-1 || pt_id==-1){
+            Toast.makeText(this,"잘못된 접근입니다",Toast.LENGTH_LONG).show();
+            finish();
+        }
         if(intent.getIntExtra("edit",0)==0){
             //새로운 PT
             toolbar.setTitle("새로운 PT 신청");
@@ -146,7 +153,7 @@ public class AddScheduleActivity extends AppCompatActivity {
                                 schedule.put("date",date);
                                 schedule.put("is_trainer",false);
                                 schedule.put("student_id",studentId);
-                                schedule.put("trainer_id",trainerId);
+                                schedule.put("trainer_id",trainer_id);
                                 schedule.put("past_schedule_id",pastId);
                                 //pt id는 내부것을 사용하는게 나을듯
                                 schedule.put("pt_id",pt_id);
@@ -154,9 +161,9 @@ public class AddScheduleActivity extends AppCompatActivity {
                                 schedule.put("trainer_schedule_id",id);
 
 
-                                Log.d("TAG", "post 점검 : student "+schedule.get("student_id")+
-                                        " trainer "+schedule.get("trainer_id")+
-                                        " pt_id " +schedule.get("pt_id") );
+                                Log.d("TAG", "post 점검 : student : "+schedule.get("student_id")+
+                                        " trainer : "+schedule.get("trainer_id")+
+                                        " pt_id : " +schedule.get("pt_id") );
 
                                 retrofit_postSchedule(schedule);
                             }
@@ -191,7 +198,7 @@ public class AddScheduleActivity extends AppCompatActivity {
             }
         });
 
-        retrofit_getTrainerSchedule();
+        retrofit_getTrainerSchedule(trainer_id);
     }
 
 
@@ -227,10 +234,10 @@ public class AddScheduleActivity extends AppCompatActivity {
     }
 
 
-    public void retrofit_getTrainerSchedule(){
+    public void retrofit_getTrainerSchedule(int trainer_id){
         apiInterface = APIClient.getClient().create(APIInterface.class);
 
-        Call<TrainerScheduleResponse> call = apiInterface.getTrainerSchedule(trainerId);
+        Call<TrainerScheduleResponse> call = apiInterface.getTrainerSchedule(trainer_id);
         call.enqueue(new Callback<TrainerScheduleResponse>(){
             @Override
             public void onResponse(Call<TrainerScheduleResponse> call,

@@ -5,12 +5,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,19 +21,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.google.gson.JsonObject;
 import com.newblack.coffit.APIClient;
 import com.newblack.coffit.APIInterface;
 import com.newblack.coffit.Data.Student;
 import com.newblack.coffit.R;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -77,7 +71,7 @@ public class ProfileEditActivitiy extends AppCompatActivity {
         }
         else{
             iv_profile = findViewById(R.id.iv_profile);
-            tv_name = findViewById(R.id.tv_name);
+            tv_name = findViewById(R.id.tv_title);
             tv_email =findViewById(R.id.tv_email);
             tv_age = findViewById(R.id.tv_age);
             tv_phone = findViewById(R.id.tv_phone);
@@ -96,6 +90,7 @@ public class ProfileEditActivitiy extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -108,7 +103,13 @@ public class ProfileEditActivitiy extends AppCompatActivity {
         int id = item.getItemId();
         if(id==R.id.toolbar_save){
 //            retrofit_put_student(id);
-            retrofit_putStudent(student_id,image_path);
+            if(image_path==null){
+                retrofit_putStudent(student_id);
+            }
+            else{
+                retrofit_putStudentForm(student_id,image_path);
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -160,8 +161,44 @@ public class ProfileEditActivitiy extends AppCompatActivity {
         }
     }
 
+    public void retrofit_putStudent(int id) {
+        Log.d("TAG"," id : "+id);
+        RequestBody name = RequestBody.create(MediaType.parse("multipart/form-data"),
+                tv_name.getText().toString());
+        RequestBody age = RequestBody.create(MediaType.parse("multipart/form-data"),
+                tv_age.getText().toString());
+        RequestBody email = RequestBody.create(MediaType.parse("multipart/form-data"),
+                tv_email.getText().toString());
+        RequestBody phone = RequestBody.create(MediaType.parse("multipart/form-data"),
+                tv_phone.getText().toString());
+        RequestBody gender = RequestBody.create(MediaType.parse("multipart/form-data"),
+                "남성");
 
-    public void retrofit_putStudent(int id, String filePath){
+
+        apiInterface = APIClient.getClient().create(APIInterface.class);
+        Call<ResponseBody> call = apiInterface.putStudent(name, email, age, phone, gender, id );
+        call.enqueue(new Callback<ResponseBody>(){
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response){
+                if(response.isSuccessful()){
+                    Log.d("TAG","retrofit put 수행을 완료했습니다.");
+                }
+                else{
+                    Log.d("TAG","retrofit put onResponse의 response에 문제가 있습니다.");
+                }
+                finish();
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+                Log.d("TAG", "통신 실패");
+            }
+        });
+
+    }
+
+
+    public void retrofit_putStudentForm(int id, String filePath){
         Log.d("TAG"," id : "+id);
         File file = new File(filePath);
         // Create a request body with file and image media type
@@ -177,10 +214,12 @@ public class ProfileEditActivitiy extends AppCompatActivity {
                 tv_email.getText().toString());
         RequestBody phone = RequestBody.create(MediaType.parse("multipart/form-data"),
                 tv_phone.getText().toString());
+        RequestBody gender = RequestBody.create(MediaType.parse("multipart/form-data"),
+                "남성");
 
 
         apiInterface = APIClient.getClient().create(APIInterface.class);
-        Call<ResponseBody> call = apiInterface.putStudentForm(part, name, email, age, phone, id);
+        Call<ResponseBody> call = apiInterface.putStudentForm(part, name, email, age, phone, gender, id);
         call.enqueue(new Callback<ResponseBody>(){
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response){

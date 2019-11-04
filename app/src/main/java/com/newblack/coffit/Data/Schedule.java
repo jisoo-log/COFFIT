@@ -24,14 +24,15 @@ public class Schedule implements Serializable {
     private boolean is_trainer;
     @SerializedName("past_schedule_id")
     private int pastId;
-
+    @SerializedName("trainer_schedule_id")
+    private int ts_id;
 
     @SerializedName("date")
     private Date date;
-//    @SerializedName("start_time")
-//    private String startTime;
-//    @SerializedName("end_time")
-//    private String endTime;
+    @SerializedName("start_time")
+    private String startTime;
+    @SerializedName("end_time")
+    private String endTime;
 
     @SerializedName("memo")
     private String memo;
@@ -45,9 +46,16 @@ public class Schedule implements Serializable {
     private int count;
 
     //테스트용
-    @SerializedName("createdAt")
-    public Date createdAt;
+//    @SerializedName("createdAt")
+//    public Date createdAt;
 
+    public int getTs_id() {
+        return ts_id;
+    }
+
+    public int getPastId() {
+        return pastId;
+    }
 
     public int getId() {
         return id;

@@ -110,7 +110,7 @@ public class Trainer implements Serializable {
         return fcmToken;
     }
 
-    public int getStar() {
+    public int getTotalStar() {
         return star;
     }
 
@@ -125,4 +125,6 @@ public class Trainer implements Serializable {
     public List<ExtraPic> getExtraPics() {
         return extraPics;
     }
+
+    public float getRate(){ return this.star/(float)this.numReview; }
 }

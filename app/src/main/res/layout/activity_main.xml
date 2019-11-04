@@ -19,15 +19,14 @@
         android:id="@+id/mainFrame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10"
-        android:padding="10dp">
+        android:layout_weight="10">
 
     </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
-        android:background="?android:attr/windowBackground"
+        android:background="?android:windowBackground"
         app:itemIconTint="@drawable/selector"
         android:layout_height="0dp"
         android:layout_weight="1"
